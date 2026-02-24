@@ -1,0 +1,98 @@
+{
+  "runId": "run_20260223_001",
+  "workflowId": "backtrack_orchestra_ui_patch",
+  "workflowVersion": 1,
+  "createdAt": "2026-02-23T13:50:00Z",
+  "updatedAt": "2026-02-23T13:51:30Z",
+  "nodes": [
+    {
+      "phaseId": "phase_a",
+      "label": "Context Initialization",
+      "phaseType": "HUMAN",
+      "status": "COMPLETED",
+      "dependsOn": []
+    },
+    {
+      "phaseId": "phase_b",
+      "label": "Variant Generation A",
+      "phaseType": "LLM",
+      "status": "RUNNING",
+      "dependsOn": ["phase_a"]
+    },
+    {
+      "phaseId": "phase_c",
+      "label": "Variant Generation B",
+      "phaseType": "LLM",
+      "status": "RUNNING",
+      "dependsOn": ["phase_a"]
+    },
+    {
+      "phaseId": "phase_d",
+      "label": "Human Review",
+      "phaseType": "HUMAN",
+      "status": "BLOCKED",
+      "dependsOn": ["phase_b", "phase_c"]
+    },
+    {
+      "phaseId": "phase_e",
+      "label": "Merge and Finalize",
+      "phaseType": "SYSTEM",
+      "status": "BLOCKED",
+      "dependsOn": ["phase_d"]
+    }
+  ],
+  "edges": [
+    { "from": "phase_a", "to": "phase_b" },
+    { "from": "phase_a", "to": "phase_c" },
+    { "from": "phase_b", "to": "phase_d" },
+    { "from": "phase_c", "to": "phase_d" },
+    { "from": "phase_d", "to": "phase_e" }
+  ],
+  "phases": {
+    "phase_a": {
+      "runId": "run_20260223_001",
+      "phaseId": "phase_a",
+      "attempt": 1,
+      "status": "COMPLETED",
+      "startedAt": "2026-02-23T13:50:01Z",
+      "finishedAt": "2026-02-23T13:50:08Z",
+      "artifacts": [
+        {
+          "artifactId": "art_context_001",
+          "kind": "json",
+          "uri": "s3://vector/runs/run_20260223_001/phase_a/context.json"
+        }
+      ]
+    },
+    "phase_b": {
+      "runId": "run_20260223_001",
+      "phaseId": "phase_b",
+      "attempt": 1,
+      "status": "RUNNING",
+      "startedAt": "2026-02-23T13:50:10Z",
+      "artifacts": []
+    },
+    "phase_c": {
+      "runId": "run_20260223_001",
+      "phaseId": "phase_c",
+      "attempt": 1,
+      "status": "RUNNING",
+      "startedAt": "2026-02-23T13:50:11Z",
+      "artifacts": []
+    },
+    "phase_d": {
+      "runId": "run_20260223_001",
+      "phaseId": "phase_d",
+      "attempt": 1,
+      "status": "BLOCKED",
+      "artifacts": []
+    },
+    "phase_e": {
+      "runId": "run_20260223_001",
+      "phaseId": "phase_e",
+      "attempt": 1,
+      "status": "BLOCKED",
+      "artifacts": []
+    }
+  }
+}

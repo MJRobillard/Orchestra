@@ -1,0 +1,12 @@
+{
+  "eventId": "evt_000345",
+  "eventType": "phase_updated",
+  "runId": "run_20260223_001",
+  "emittedAt": "2026-02-23T13:51:31Z",
+  "phase": {
+    "phaseId": "phase_b",
+    "attempt": 1,
+    "previousStatus": "RUNNING",
+    "status": "READY_FOR_REVIEW"
+  }
+}

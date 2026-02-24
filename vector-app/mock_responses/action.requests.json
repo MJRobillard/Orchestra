@@ -1,0 +1,22 @@
+{
+  "startPhase": {
+    "action": "START_PHASE",
+    "runId": "run_20260223_001",
+    "phaseId": "phase_b",
+    "actorId": "system:runner"
+  },
+  "approvePhase": {
+    "action": "APPROVE_PHASE",
+    "runId": "run_20260223_001",
+    "phaseId": "phase_d",
+    "actorId": "human:reviewer_01",
+    "reason": "Variant A is consistent with rubric"
+  },
+  "retryPhase": {
+    "action": "RETRY_PHASE",
+    "runId": "run_20260223_001",
+    "phaseId": "phase_c",
+    "actorId": "human:reviewer_01",
+    "reason": "Improve spacing and alignment"
+  }
+}

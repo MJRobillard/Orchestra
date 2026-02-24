@@ -1,0 +1,33 @@
+{
+  "name": "vector-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "test:e2e": "playwright test",
+    "test:contracts": "playwright test tests/backend.contract.spec.ts",
+    "test:frontend": "playwright test tests/frontend.workflow.spec.ts"
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.4.4",
+    "dotenv": "^17.3.1",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
