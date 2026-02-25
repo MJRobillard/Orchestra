@@ -17,7 +17,7 @@ import {
   markPhaseCompleted,
   persistPhaseOutput,
 } from "@/backend/workflow-engine";
-import { callLlmForPhase, requiresLlmPhaseExecution } from "@/backend/llm-client";
+import { callLlmBatch, callLlmForPhase, requiresLlmPhaseExecution } from "@/backend/llm-client";
 
 interface RouteParams {
   params: Promise<{ runId: string; phaseId: string }>;
@@ -556,127 +556,6 @@ function parseStructuredOutput(raw: string, phaseId: string): StructuredPhaseOut
   }
 }
 
-async function autoRunPermutationPhase(params: {
-  runId: string;
-  phaseId: "phase_b" | "phase_c";
-  actorId: string;
-  prompt: string;
-  spec: PermutationSpec;
-}): Promise<{
-  phaseId: "phase_b" | "phase_c";
-  provider: string;
-  output: PhaseOutput;
-  variantId: string;
-  label: string;
-  artifacts: Array<{ artifactId: string; kind: string; uri: string }>;
-}> {
-  applyWorkflowAction({
-    action: "START_PHASE",
-    actorId: params.actorId,
-    phaseId: params.phaseId,
-    runId: params.runId,
-  });
-
-  const llmResult = await callLlmForPhase({
-    runId: params.runId,
-    phaseId: params.phaseId,
-    prompt: params.prompt,
-  });
-  const structured = parseStructuredOutput(llmResult.content, params.phaseId);
-
-  const output: PhaseOutput = {
-    variantId: params.spec.variantId,
-    renderMode: structured.renderMode,
-    uiSchema: structured.uiSchema,
-    uiCode: structured.uiCode,
-    diff: structured.diff,
-    rubricResults: structured.rubricResults,
-    details: {
-      provider: llmResult.provider,
-      generatedAt: new Date().toISOString(),
-      permutationMode: params.spec.intensity <= 0.5 ? "darker" : "lighter",
-      permutationIntensity: params.spec.intensity,
-      permutationIndex: params.spec.index,
-      permutationTotal: params.spec.total,
-      source: "auto_phase_a_permutation",
-    },
-  };
-
-  const artifacts = persistPhaseOutput({
-    runId: params.runId,
-    phaseId: params.phaseId,
-    output,
-    artifactPayloads: [
-      { kind: "json", data: { uiSchema: output.uiSchema } },
-      ...(output.uiCode ? [{ kind: "json" as const, data: { uiCode: output.uiCode } }] : []),
-      { kind: "diff", data: { diff: output.diff } },
-      { kind: "rubric", data: { rubricResults: output.rubricResults } },
-      { kind: "json", data: { output } },
-    ],
-  });
-
-  applyWorkflowAction({
-    action: "APPROVE_PHASE",
-    actorId: params.actorId,
-    phaseId: params.phaseId,
-    reason: "Auto-approved permutation output; human review is deferred to phase_d",
-    runId: params.runId,
-  });
-
-  return {
-    phaseId: params.phaseId,
-    provider: llmResult.provider,
-    output,
-    variantId: params.spec.variantId,
-    label: params.spec.label,
-    artifacts,
-  };
-}
-
-async function autoRunDetachedPermutationVariant(params: {
-  runId: string;
-  actorId: string;
-  prompt: string;
-  spec: PermutationSpec;
-}): Promise<{
-  provider: string;
-  output: PhaseOutput;
-  variantId: string;
-  label: string;
-}> {
-  const llmResult = await callLlmForPhase({
-    runId: params.runId,
-    phaseId: "phase_d",
-    prompt: params.prompt,
-  });
-  const structured = parseStructuredOutput(llmResult.content, params.spec.variantId);
-
-  const output: PhaseOutput = {
-    variantId: params.spec.variantId,
-    renderMode: structured.renderMode,
-    uiSchema: structured.uiSchema,
-    uiCode: structured.uiCode,
-    diff: structured.diff,
-    rubricResults: structured.rubricResults,
-    details: {
-      provider: llmResult.provider,
-      generatedAt: new Date().toISOString(),
-      permutationMode: params.spec.intensity <= 0.5 ? "darker" : "lighter",
-      permutationIntensity: params.spec.intensity,
-      permutationIndex: params.spec.index,
-      permutationTotal: params.spec.total,
-      source: "auto_phase_a_permutation_detached",
-    },
-  };
-
-  return {
-    provider: llmResult.provider,
-    output,
-    variantId: params.spec.variantId,
-    label: params.spec.label,
-  };
-}
-
 function shouldExecuteLlm(action: WorkflowActionType, phaseId: string, phaseType?: PhaseType): boolean {
   if (!(action === "START_PHASE" || action === "RETRY_PHASE")) return false;
   if (phaseId === "phase_e") return action === "RETRY_PHASE";
@@ -858,52 +737,23 @@ export async function handleActionRequest(
           artifactPayloads: [],
         });
 
-        const refinementResults = await Promise.allSettled(
-          inductionSpecs.map((spec) =>
-            callLlmForPhase({
+        const refinementResults = await callLlmBatch({
+          items: inductionSpecs.map((spec) => ({
+            key: spec.variantId,
+            runId,
+            phaseId,
+            prompt: buildComponentRefinementPrompt({
               runId,
-              phaseId,
-              prompt: buildComponentRefinementPrompt({
-                runId,
-                componentSelector: parsedComponentRefinementPayload.componentSelector,
-                refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
-                currentHtml,
-                branchLabel: spec.label,
-                branchIndex: spec.index,
-                branchTotal: spec.total,
-                branchIntensity: spec.intensity,
-              }),
-            })
-              .then((llmResult) => {
-                const structured = parseStructuredOutput(llmResult.content, spec.variantId);
-                const output: PhaseOutput = {
-                  variantId: spec.variantId,
-                  renderMode: structured.renderMode,
-                  uiSchema: structured.uiSchema,
-                  uiCode: structured.uiCode,
-                  diff: structured.diff,
-                  rubricResults: structured.rubricResults,
-                  details: {
-                    provider: llmResult.provider,
-                    generatedAt: new Date().toISOString(),
-                    source: "phase_e_component_induction_branch",
-                    componentSelector: parsedComponentRefinementPayload.componentSelector,
-                    refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
-                    scopedRefinement: true,
-                    inductionBranchIndex: spec.index,
-                    inductionBranchTotal: spec.total,
-                    inductionBranchIntensity: spec.intensity,
-                  },
-                };
-                return {
-                  variantId: spec.variantId,
-                  label: spec.label,
-                  provider: llmResult.provider,
-                  output,
-                };
-              }),
-          ),
-        );
+              componentSelector: parsedComponentRefinementPayload.componentSelector,
+              refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
+              currentHtml,
+              branchLabel: spec.label,
+              branchIndex: spec.index,
+              branchTotal: spec.total,
+              branchIntensity: spec.intensity,
+            }),
+          })),
+        });
 
         const successfulRefinements: Array<{
           variantId: string;
@@ -919,16 +769,41 @@ export async function handleActionRequest(
           status: "ERROR_STATUS";
           output: PhaseOutput;
         }> = [];
-        refinementResults.forEach((result, index) => {
-          const spec = inductionSpecs[index];
-          if (result.status === "fulfilled") {
+        refinementResults.forEach((result) => {
+          const spec = inductionSpecs.find((candidate) => candidate.variantId === result.key);
+          if (!spec) return;
+          if (result.status === "SUCCESS") {
+            const structured = parseStructuredOutput(result.content ?? "", spec.variantId);
+            const output: PhaseOutput = {
+              variantId: spec.variantId,
+              renderMode: structured.renderMode,
+              uiSchema: structured.uiSchema,
+              uiCode: structured.uiCode,
+              diff: structured.diff,
+              rubricResults: structured.rubricResults,
+              details: {
+                provider: result.provider,
+                generatedAt: new Date().toISOString(),
+                rawLlmResponse: result.content ?? "",
+                source: "phase_e_component_induction_branch",
+                componentSelector: parsedComponentRefinementPayload.componentSelector,
+                refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
+                scopedRefinement: true,
+                inductionBranchIndex: spec.index,
+                inductionBranchTotal: spec.total,
+                inductionBranchIntensity: spec.intensity,
+              },
+            };
             successfulRefinements.push({
-              ...result.value,
+              variantId: spec.variantId,
+              label: spec.label,
+              provider: result.provider ?? "llm",
               status: "APPROVED",
+              output,
             });
             return;
           }
-          const message = result.reason instanceof Error ? result.reason.message : "Unknown refinement failure";
+          const message = result.error ?? "Unknown refinement failure";
           autoStartErrors.push(`${spec.variantId}: ${message}`);
           failedRefinements.push({
             variantId: spec.variantId,
@@ -1069,6 +944,18 @@ export async function handleActionRequest(
         runId,
         phaseId,
         prompt,
+        debugContext: isPhaseAContextInit
+          ? {
+              source: "phase_a_context_init",
+              intent: parsedContextPayload?.intent ?? "",
+              tokens: parsedContextPayload?.tokens ?? "",
+              rubric: parsedContextPayload?.rubric ?? "",
+              branchFactor: parsedContextPayload?.branchFactor ?? null,
+            }
+          : {
+              source: "workflow_phase_execution",
+              phaseId,
+            },
       });
       llmProvider = llmResult.provider;
       const structured = parseStructuredOutput(llmResult.content, phaseId);
@@ -1083,6 +970,7 @@ export async function handleActionRequest(
         details: {
           provider: llmResult.provider,
           generatedAt: new Date().toISOString(),
+          rawLlmResponse: llmResult.content,
         },
       };
 
@@ -1157,31 +1045,19 @@ export async function handleActionRequest(
           },
           artifactPayloads: [],
         });
-        const permutationResults = await Promise.allSettled(
-          permutationSpecs.map((permutation) => {
-            const permutationPrompt = buildPermutationPrompt(
+        const permutationResults = await callLlmBatch({
+          items: permutationSpecs.map((permutation) => ({
+            key: permutation.variantId,
+            runId,
+            phaseId: permutation.phaseId ?? "phase_d",
+            prompt: buildPermutationPrompt(
               permutation.phaseId ?? "phase_d",
               runId,
               contextForPermutations,
               permutation,
-            );
-            if (permutation.phaseId) {
-              return autoRunPermutationPhase({
-                runId,
-                phaseId: permutation.phaseId,
-                actorId: actorId,
-                prompt: permutationPrompt,
-                spec: permutation,
-              });
-            }
-            return autoRunDetachedPermutationVariant({
-              runId,
-              actorId: actorId,
-              prompt: permutationPrompt,
-              spec: permutation,
-            });
-          }),
-        );
+            ),
+          })),
+        });
 
         const generatedVariants: Array<{
           variantId: string;
@@ -1191,25 +1067,71 @@ export async function handleActionRequest(
           output: PhaseOutput;
         }> = [];
 
-        permutationResults.forEach((result, index) => {
-          const permutation = permutationSpecs[index];
-          if (result.status === "fulfilled") {
-            const successful = result.value;
-            if ("phaseId" in successful && typeof successful.phaseId === "string") {
-              autoStartedPhases.push(successful.phaseId);
+        permutationResults.forEach((result) => {
+          const permutation = permutationSpecs.find((candidate) => candidate.variantId === result.key);
+          if (!permutation) return;
+          if (result.status === "SUCCESS") {
+            const structured = parseStructuredOutput(result.content ?? "", permutation.variantId);
+            const output: PhaseOutput = {
+              variantId: permutation.variantId,
+              renderMode: structured.renderMode,
+              uiSchema: structured.uiSchema,
+              uiCode: structured.uiCode,
+              diff: structured.diff,
+              rubricResults: structured.rubricResults,
+              details: {
+                provider: result.provider,
+                generatedAt: new Date().toISOString(),
+                rawLlmResponse: result.content ?? "",
+                permutationMode: permutation.intensity <= 0.5 ? "darker" : "lighter",
+                permutationIntensity: permutation.intensity,
+                permutationIndex: permutation.index,
+                permutationTotal: permutation.total,
+                source: permutation.phaseId
+                  ? "auto_phase_a_permutation"
+                  : "auto_phase_a_permutation_detached",
+              },
+            };
+
+            if (permutation.phaseId) {
+              applyWorkflowAction({
+                action: "START_PHASE",
+                actorId: actorId,
+                phaseId: permutation.phaseId,
+                runId,
+              });
+              persistPhaseOutput({
+                runId,
+                phaseId: permutation.phaseId,
+                output,
+                artifactPayloads: [
+                  { kind: "json", data: { uiSchema: output.uiSchema } },
+                  ...(output.uiCode ? [{ kind: "json" as const, data: { uiCode: output.uiCode } }] : []),
+                  { kind: "diff", data: { diff: output.diff } },
+                  { kind: "rubric", data: { rubricResults: output.rubricResults } },
+                  { kind: "json", data: { output } },
+                ],
+              });
+              applyWorkflowAction({
+                action: "APPROVE_PHASE",
+                actorId: actorId,
+                phaseId: permutation.phaseId,
+                reason: "Auto-approved permutation output; human review is deferred to phase_d",
+                runId,
+              });
+              autoStartedPhases.push(permutation.phaseId);
             }
+
             generatedVariants.push({
-              variantId: successful.variantId,
-              label: successful.label,
-              provider: successful.provider,
+              variantId: permutation.variantId,
+              label: permutation.label,
+              provider: result.provider ?? "llm",
               status: "APPROVED",
-              output: successful.output,
+              output,
             });
             return;
           }
-          const message = result.reason instanceof Error
-            ? result.reason.message
-            : "Unknown permutation failure";
+          const message = result.error ?? "Unknown permutation failure";
           autoStartErrors.push(`${permutation.variantId}: ${message}`);
           generatedVariants.push({
             variantId: permutation.variantId,
@@ -1563,6 +1485,7 @@ export async function handleActionRequest(
             details: {
               provider: llmMergeResult.provider,
               generatedAt: new Date().toISOString(),
+              rawLlmResponse: llmMergeResult.content,
               source: "auto_phase_e_finalize_llm_merge",
               fromPhases: variantsForMerge.map((variant) => variant.variantId),
               mergerExplanation: parsedMergeReviewPayload?.mergerExplanation ?? "",

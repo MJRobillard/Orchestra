@@ -1,2 +1,3 @@
 .specstory/*
 .env
+.env.local

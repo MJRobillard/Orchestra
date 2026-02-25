@@ -9,6 +9,7 @@ import { useWorkflowStore, type ConnectionStatus } from "./store/workflow-store"
 import { useWorkflowSnapshot } from "./hooks/useWorkflowSnapshot";
 import { useWorkflowStream } from "./hooks/useWorkflowStream";
 import { usePhaseAction } from "./hooks/usePhaseAction";
+import { usePythonBackendHealth } from "./hooks/usePythonBackendHealth";
 import {
   ACTION_BUTTON_CLASS,
   ACTION_LABEL,
@@ -61,6 +62,16 @@ const CONNECTION_INDICATOR: Record<ConnectionStatus, { dot: string; label: strin
   open:        { dot: "bg-emerald-400",             label: "live"        },
   closed:      { dot: "bg-slate-600",               label: "offline"     },
   error:       { dot: "bg-red-500",                 label: "error"       },
+};
+
+const PYTHON_BACKEND_INDICATOR: Record<
+  ReturnType<typeof usePythonBackendHealth>,
+  { dot: string; label: string }
+> = {
+  checking: { dot: "bg-amber-400 animate-pulse", label: "Backend: checking" },
+  connected: { dot: "bg-emerald-400", label: "Backend: connected" },
+  disconnected: { dot: "bg-red-500", label: "Backend: disconnected" },
+  disabled: { dot: "bg-slate-600", label: "Backend: disabled" },
 };
 
 const WORKFLOW_RUN_ID = "run_phase_a_poc";
@@ -366,6 +377,8 @@ export default function WorkflowPage() {
     | { intent?: string; tokens?: string; rubric?: string }
     | undefined;
   const conn = CONNECTION_INDICATOR[connectionStatus];
+  const pythonBackendStatus = usePythonBackendHealth();
+  const pythonConn = PYTHON_BACKEND_INDICATOR[pythonBackendStatus];
   const [dismissedCompareForPhaseId, setDismissedCompareForPhaseId] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const isHumanReviewSurface =
@@ -385,6 +398,9 @@ export default function WorkflowPage() {
     Boolean(activeWorkerSandboxArtifact) && selectedNode?.phaseType !== "HUMAN";
   const outputProvider = typeof selectedOutput?.details?.provider === "string"
     ? selectedOutput.details.provider.toLowerCase()
+    : undefined;
+  const rawLlmResponse = typeof selectedOutput?.details?.rawLlmResponse === "string"
+    ? selectedOutput.details.rawLlmResponse
     : undefined;
   const hasInductionRefinementVariants =
     Array.isArray(snapshot.phases.phase_e?.output?.details?.generatedRefinements)
@@ -643,6 +659,10 @@ export default function WorkflowPage() {
             <span className={`inline-block h-2 w-2 rounded-full ${conn.dot}`} />
             {conn.label}
           </span>
+          <span className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className={`inline-block h-2 w-2 rounded-full ${pythonConn.dot}`} />
+            {pythonConn.label}
+          </span>
 
           {/* Dev button: dispatches through store to prove DoD item 2 */}
 
@@ -823,6 +843,14 @@ export default function WorkflowPage() {
                         <p className="mb-1 text-[10px] uppercase tracking-wider text-slate-500">Summary</p>
                         <pre className="whitespace-pre-wrap break-all font-mono text-[10px] text-slate-300">
                           {selectedPhase.output.diff}
+                        </pre>
+                      </div>
+                    ) : null}
+                    {rawLlmResponse ? (
+                      <div className="rounded bg-slate-800 p-3">
+                        <p className="mb-1 text-[10px] uppercase tracking-wider text-slate-500">Raw LLM Response</p>
+                        <pre className="max-h-56 overflow-auto whitespace-pre-wrap break-all font-mono text-[10px] text-slate-300">
+                          {rawLlmResponse}
                         </pre>
                       </div>
                     ) : null}

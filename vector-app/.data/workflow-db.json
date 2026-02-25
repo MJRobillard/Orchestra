@@ -1,11 +1,11 @@
 {
   "runs": {
-    "run_m3_desync_check": {
-      "runId": "run_m3_desync_check",
+    "run_milestone_4_artifacts": {
+      "runId": "run_milestone_4_artifacts",
       "workflowId": "backtrack_orchestra_ui_patch",
       "workflowVersion": 1,
-      "createdAt": "2026-02-24T23:09:49.096Z",
-      "updatedAt": "2026-02-24T23:09:49.099Z",
+      "createdAt": "2026-02-25T00:22:03.533Z",
+      "updatedAt": "2026-02-25T00:22:03.543Z",
       "nodes": [
         {
           "phaseId": "phase_a",
@@ -27,7 +27,7 @@
           "phaseId": "phase_c",
           "label": "Variant Generation B",
           "phaseType": "LLM",
-          "status": "APPROVED",
+          "status": "BLOCKED",
           "dependsOn": [
             "phase_a"
           ]
@@ -36,7 +36,7 @@
           "phaseId": "phase_d",
           "label": "Human Review",
           "phaseType": "HUMAN",
-          "status": "DRAFT",
+          "status": "BLOCKED",
           "dependsOn": [
             "phase_b",
             "phase_c"
@@ -76,37 +76,672 @@
       ],
       "phases": {
         "phase_a": {
-          "runId": "run_m3_desync_check",
+          "runId": "run_milestone_4_artifacts",
           "phaseId": "phase_a",
           "attempt": 1,
           "status": "DRAFT",
           "artifacts": []
         },
         "phase_b": {
-          "runId": "run_m3_desync_check",
+          "runId": "run_milestone_4_artifacts",
           "phaseId": "phase_b",
           "attempt": 1,
           "status": "APPROVED",
-          "artifacts": [],
-          "finishedAt": "2026-02-24T23:09:49.097Z"
+          "startedAt": "2026-02-25T00:22:03.542Z",
+          "artifacts": [
+            {
+              "artifactId": "art_453001f6-55f0-41db-a9df-63528db3251f",
+              "kind": "json",
+              "uri": "db://artifacts/art_453001f6-55f0-41db-a9df-63528db3251f"
+            },
+            {
+              "artifactId": "art_f5d1028b-1883-4188-ae57-416e6311f6b6",
+              "kind": "diff",
+              "uri": "db://artifacts/art_f5d1028b-1883-4188-ae57-416e6311f6b6"
+            },
+            {
+              "artifactId": "art_0abd63be-9992-4882-bcdd-5f114b910d83",
+              "kind": "rubric",
+              "uri": "db://artifacts/art_0abd63be-9992-4882-bcdd-5f114b910d83"
+            },
+            {
+              "artifactId": "art_c356222d-6d7e-4663-8a19-96f240972e0a",
+              "kind": "json",
+              "uri": "db://artifacts/art_c356222d-6d7e-4663-8a19-96f240972e0a"
+            }
+          ],
+          "finishedAt": "2026-02-25T00:22:03.543Z",
+          "output": {
+            "variantId": "phase_b_variant_1771978923538",
+            "renderMode": "schema",
+            "uiSchema": {
+              "version": 1,
+              "tokens": {
+                "accentColor": "#8B5CF6",
+                "radius": "md",
+                "spacing": "md"
+              },
+              "tree": [
+                {
+                  "id": "phase_b_root",
+                  "type": "container",
+                  "children": [
+                    {
+                      "id": "phase_b_title",
+                      "type": "heading",
+                      "text": "Preview for phase_b"
+                    },
+                    {
+                      "id": "phase_b_body",
+                      "type": "text",
+                      "text": "Model output was normalized into constrained preview components."
+                    },
+                    {
+                      "id": "phase_b_cta",
+                      "type": "button",
+                      "text": "Primary Action",
+                      "variant": "primary"
+                    }
+                  ]
+                }
+              ]
+            },
+            "diff": "Mock persisted diff output",
+            "rubricResults": [
+              {
+                "criterion": "Structured output parse",
+                "score": 3,
+                "maxScore": 5,
+                "note": "Response was non-JSON; fallback preview used"
+              }
+            ],
+            "details": {
+              "provider": "deepseek",
+              "generatedAt": "2026-02-25T00:22:03.538Z",
+              "rawLlmResponse": "Mock persisted diff output"
+            }
+          }
         },
         "phase_c": {
-          "runId": "run_m3_desync_check",
+          "runId": "run_milestone_4_artifacts",
           "phaseId": "phase_c",
           "attempt": 1,
-          "status": "APPROVED",
-          "artifacts": [],
-          "finishedAt": "2026-02-24T23:09:49.099Z"
+          "status": "BLOCKED",
+          "artifacts": []
         },
         "phase_d": {
-          "runId": "run_m3_desync_check",
+          "runId": "run_milestone_4_artifacts",
           "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_e": {
+          "runId": "run_milestone_4_artifacts",
+          "phaseId": "phase_e",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        }
+      }
+    },
+    "run_milestone_1_backend": {
+      "runId": "run_milestone_1_backend",
+      "workflowId": "backtrack_orchestra_ui_patch",
+      "workflowVersion": 1,
+      "createdAt": "2026-02-25T00:47:56.447Z",
+      "updatedAt": "2026-02-25T00:47:56.447Z",
+      "nodes": [
+        {
+          "phaseId": "phase_a",
+          "label": "Context Initialization",
+          "phaseType": "HUMAN",
+          "status": "DRAFT",
+          "dependsOn": []
+        },
+        {
+          "phaseId": "phase_b",
+          "label": "Variant Generation A",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_c",
+          "label": "Variant Generation B",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_d",
+          "label": "Human Review",
+          "phaseType": "HUMAN",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_b",
+            "phase_c"
+          ]
+        },
+        {
+          "phaseId": "phase_e",
+          "label": "Merge and Finalize",
+          "phaseType": "SYSTEM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_d"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "phase_a",
+          "to": "phase_b"
+        },
+        {
+          "from": "phase_a",
+          "to": "phase_c"
+        },
+        {
+          "from": "phase_b",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_c",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_d",
+          "to": "phase_e"
+        }
+      ],
+      "phases": {
+        "phase_a": {
+          "runId": "run_milestone_1_backend",
+          "phaseId": "phase_a",
           "attempt": 1,
           "status": "DRAFT",
           "artifacts": []
         },
+        "phase_b": {
+          "runId": "run_milestone_1_backend",
+          "phaseId": "phase_b",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_c": {
+          "runId": "run_milestone_1_backend",
+          "phaseId": "phase_c",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_d": {
+          "runId": "run_milestone_1_backend",
+          "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
         "phase_e": {
-          "runId": "run_m3_desync_check",
+          "runId": "run_milestone_1_backend",
+          "phaseId": "phase_e",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        }
+      }
+    },
+    "run_milestone_1_action": {
+      "runId": "run_milestone_1_action",
+      "workflowId": "backtrack_orchestra_ui_patch",
+      "workflowVersion": 1,
+      "createdAt": "2026-02-25T00:47:56.481Z",
+      "updatedAt": "2026-02-25T00:47:56.499Z",
+      "nodes": [
+        {
+          "phaseId": "phase_a",
+          "label": "Context Initialization",
+          "phaseType": "HUMAN",
+          "status": "DRAFT",
+          "dependsOn": []
+        },
+        {
+          "phaseId": "phase_b",
+          "label": "Variant Generation A",
+          "phaseType": "LLM",
+          "status": "RUNNING",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_c",
+          "label": "Variant Generation B",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_d",
+          "label": "Human Review",
+          "phaseType": "HUMAN",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_b",
+            "phase_c"
+          ]
+        },
+        {
+          "phaseId": "phase_e",
+          "label": "Merge and Finalize",
+          "phaseType": "SYSTEM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_d"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "phase_a",
+          "to": "phase_b"
+        },
+        {
+          "from": "phase_a",
+          "to": "phase_c"
+        },
+        {
+          "from": "phase_b",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_c",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_d",
+          "to": "phase_e"
+        }
+      ],
+      "phases": {
+        "phase_a": {
+          "runId": "run_milestone_1_action",
+          "phaseId": "phase_a",
+          "attempt": 1,
+          "status": "DRAFT",
+          "artifacts": []
+        },
+        "phase_b": {
+          "runId": "run_milestone_1_action",
+          "phaseId": "phase_b",
+          "attempt": 1,
+          "status": "RUNNING",
+          "startedAt": "2026-02-25T00:47:56.499Z",
+          "artifacts": []
+        },
+        "phase_c": {
+          "runId": "run_milestone_1_action",
+          "phaseId": "phase_c",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_d": {
+          "runId": "run_milestone_1_action",
+          "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_e": {
+          "runId": "run_milestone_1_action",
+          "phaseId": "phase_e",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        }
+      }
+    },
+    "run_milestone_2_publish": {
+      "runId": "run_milestone_2_publish",
+      "workflowId": "backtrack_orchestra_ui_patch",
+      "workflowVersion": 1,
+      "createdAt": "2026-02-25T00:47:56.548Z",
+      "updatedAt": "2026-02-25T00:47:56.563Z",
+      "nodes": [
+        {
+          "phaseId": "phase_a",
+          "label": "Context Initialization",
+          "phaseType": "HUMAN",
+          "status": "DRAFT",
+          "dependsOn": []
+        },
+        {
+          "phaseId": "phase_b",
+          "label": "Variant Generation A",
+          "phaseType": "LLM",
+          "status": "RUNNING",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_c",
+          "label": "Variant Generation B",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_d",
+          "label": "Human Review",
+          "phaseType": "HUMAN",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_b",
+            "phase_c"
+          ]
+        },
+        {
+          "phaseId": "phase_e",
+          "label": "Merge and Finalize",
+          "phaseType": "SYSTEM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_d"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "phase_a",
+          "to": "phase_b"
+        },
+        {
+          "from": "phase_a",
+          "to": "phase_c"
+        },
+        {
+          "from": "phase_b",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_c",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_d",
+          "to": "phase_e"
+        }
+      ],
+      "phases": {
+        "phase_a": {
+          "runId": "run_milestone_2_publish",
+          "phaseId": "phase_a",
+          "attempt": 1,
+          "status": "DRAFT",
+          "artifacts": []
+        },
+        "phase_b": {
+          "runId": "run_milestone_2_publish",
+          "phaseId": "phase_b",
+          "attempt": 1,
+          "status": "RUNNING",
+          "startedAt": "2026-02-25T00:47:56.563Z",
+          "artifacts": []
+        },
+        "phase_c": {
+          "runId": "run_milestone_2_publish",
+          "phaseId": "phase_c",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_d": {
+          "runId": "run_milestone_2_publish",
+          "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_e": {
+          "runId": "run_milestone_2_publish",
+          "phaseId": "phase_e",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        }
+      }
+    },
+    "run_milestone_2_listener_fault": {
+      "runId": "run_milestone_2_listener_fault",
+      "workflowId": "backtrack_orchestra_ui_patch",
+      "workflowVersion": 1,
+      "createdAt": "2026-02-25T00:47:56.603Z",
+      "updatedAt": "2026-02-25T00:47:56.621Z",
+      "nodes": [
+        {
+          "phaseId": "phase_a",
+          "label": "Context Initialization",
+          "phaseType": "HUMAN",
+          "status": "DRAFT",
+          "dependsOn": []
+        },
+        {
+          "phaseId": "phase_b",
+          "label": "Variant Generation A",
+          "phaseType": "LLM",
+          "status": "RUNNING",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_c",
+          "label": "Variant Generation B",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_d",
+          "label": "Human Review",
+          "phaseType": "HUMAN",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_b",
+            "phase_c"
+          ]
+        },
+        {
+          "phaseId": "phase_e",
+          "label": "Merge and Finalize",
+          "phaseType": "SYSTEM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_d"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "phase_a",
+          "to": "phase_b"
+        },
+        {
+          "from": "phase_a",
+          "to": "phase_c"
+        },
+        {
+          "from": "phase_b",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_c",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_d",
+          "to": "phase_e"
+        }
+      ],
+      "phases": {
+        "phase_a": {
+          "runId": "run_milestone_2_listener_fault",
+          "phaseId": "phase_a",
+          "attempt": 1,
+          "status": "DRAFT",
+          "artifacts": []
+        },
+        "phase_b": {
+          "runId": "run_milestone_2_listener_fault",
+          "phaseId": "phase_b",
+          "attempt": 1,
+          "status": "RUNNING",
+          "startedAt": "2026-02-25T00:47:56.621Z",
+          "artifacts": []
+        },
+        "phase_c": {
+          "runId": "run_milestone_2_listener_fault",
+          "phaseId": "phase_c",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_d": {
+          "runId": "run_milestone_2_listener_fault",
+          "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_e": {
+          "runId": "run_milestone_2_listener_fault",
+          "phaseId": "phase_e",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        }
+      }
+    },
+    "run_milestone_2_stream": {
+      "runId": "run_milestone_2_stream",
+      "workflowId": "backtrack_orchestra_ui_patch",
+      "workflowVersion": 1,
+      "createdAt": "2026-02-25T00:47:56.675Z",
+      "updatedAt": "2026-02-25T00:47:56.692Z",
+      "nodes": [
+        {
+          "phaseId": "phase_a",
+          "label": "Context Initialization",
+          "phaseType": "HUMAN",
+          "status": "DRAFT",
+          "dependsOn": []
+        },
+        {
+          "phaseId": "phase_b",
+          "label": "Variant Generation A",
+          "phaseType": "LLM",
+          "status": "RUNNING",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_c",
+          "label": "Variant Generation B",
+          "phaseType": "LLM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_a"
+          ]
+        },
+        {
+          "phaseId": "phase_d",
+          "label": "Human Review",
+          "phaseType": "HUMAN",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_b",
+            "phase_c"
+          ]
+        },
+        {
+          "phaseId": "phase_e",
+          "label": "Merge and Finalize",
+          "phaseType": "SYSTEM",
+          "status": "BLOCKED",
+          "dependsOn": [
+            "phase_d"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "phase_a",
+          "to": "phase_b"
+        },
+        {
+          "from": "phase_a",
+          "to": "phase_c"
+        },
+        {
+          "from": "phase_b",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_c",
+          "to": "phase_d"
+        },
+        {
+          "from": "phase_d",
+          "to": "phase_e"
+        }
+      ],
+      "phases": {
+        "phase_a": {
+          "runId": "run_milestone_2_stream",
+          "phaseId": "phase_a",
+          "attempt": 1,
+          "status": "DRAFT",
+          "artifacts": []
+        },
+        "phase_b": {
+          "runId": "run_milestone_2_stream",
+          "phaseId": "phase_b",
+          "attempt": 1,
+          "status": "RUNNING",
+          "startedAt": "2026-02-25T00:47:56.692Z",
+          "artifacts": []
+        },
+        "phase_c": {
+          "runId": "run_milestone_2_stream",
+          "phaseId": "phase_c",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_d": {
+          "runId": "run_milestone_2_stream",
+          "phaseId": "phase_d",
+          "attempt": 1,
+          "status": "BLOCKED",
+          "artifacts": []
+        },
+        "phase_e": {
+          "runId": "run_milestone_2_stream",
           "phaseId": "phase_e",
           "attempt": 1,
           "status": "BLOCKED",
@@ -118,21 +753,21 @@
       "runId": "run_phase_a_poc",
       "workflowId": "backtrack_orchestra_ui_patch",
       "workflowVersion": 1,
-      "createdAt": "2026-02-24T23:26:15.920Z",
-      "updatedAt": "2026-02-24T23:28:15.941Z",
+      "createdAt": "2026-02-25T00:48:15.873Z",
+      "updatedAt": "2026-02-25T00:48:15.873Z",
       "nodes": [
         {
           "phaseId": "phase_a",
           "label": "Context Initialization",
           "phaseType": "HUMAN",
-          "status": "APPROVED",
+          "status": "DRAFT",
           "dependsOn": []
         },
         {
           "phaseId": "phase_b",
           "label": "Variant Generation A",
           "phaseType": "LLM",
-          "status": "APPROVED",
+          "status": "BLOCKED",
           "dependsOn": [
             "phase_a"
           ]
@@ -141,7 +776,7 @@
           "phaseId": "phase_c",
           "label": "Variant Generation B",
           "phaseType": "LLM",
-          "status": "APPROVED",
+          "status": "BLOCKED",
           "dependsOn": [
             "phase_a"
           ]
@@ -150,7 +785,7 @@
           "phaseId": "phase_d",
           "label": "Human Review",
           "phaseType": "HUMAN",
-          "status": "DRAFT",
+          "status": "BLOCKED",
           "dependsOn": [
             "phase_b",
             "phase_c"
@@ -193,569 +828,29 @@
           "runId": "run_phase_a_poc",
           "phaseId": "phase_a",
           "attempt": 1,
-          "status": "APPROVED",
-          "artifacts": [
-            {
-              "artifactId": "art_ef01f48d-ba21-409e-9d7c-8d9fcb110bc4",
-              "kind": "json",
-              "uri": "db://artifacts/art_ef01f48d-ba21-409e-9d7c-8d9fcb110bc4"
-            },
-            {
-              "artifactId": "art_7cacc5e8-6365-44e1-8478-5a8656f93b93",
-              "kind": "json",
-              "uri": "db://artifacts/art_7cacc5e8-6365-44e1-8478-5a8656f93b93"
-            },
-            {
-              "artifactId": "art_c9bc68bc-19d3-431f-a42f-d50884a306b1",
-              "kind": "json",
-              "uri": "db://artifacts/art_c9bc68bc-19d3-431f-a42f-d50884a306b1"
-            },
-            {
-              "artifactId": "art_d28d58de-38c4-4978-92e3-88b6ca0eea10",
-              "kind": "diff",
-              "uri": "db://artifacts/art_d28d58de-38c4-4978-92e3-88b6ca0eea10"
-            },
-            {
-              "artifactId": "art_1c21670a-c726-4144-af2e-ca39a3d50214",
-              "kind": "rubric",
-              "uri": "db://artifacts/art_1c21670a-c726-4144-af2e-ca39a3d50214"
-            },
-            {
-              "artifactId": "art_f8ad13fc-08da-4648-90ec-d07fac6bc3cd",
-              "kind": "json",
-              "uri": "db://artifacts/art_f8ad13fc-08da-4648-90ec-d07fac6bc3cd"
-            }
-          ],
-          "output": {
-            "variantId": "context_v0",
-            "renderMode": "code",
-            "uiSchema": {
-              "version": 1,
-              "tokens": {
-                "accentColor": "#8B5CF6",
-                "radius": "md",
-                "spacing": "md"
-              },
-              "tree": [
-                {
-                  "id": "root",
-                  "type": "container",
-                  "children": [
-                    {
-                      "id": "title",
-                      "type": "heading",
-                      "text": "Welcome to The Cheeto Factory"
-                    },
-                    {
-                      "id": "desc",
-                      "type": "text",
-                      "text": "Discover the art of crafting the world's most delicious, crunchy, and cheesy snacks."
-                    },
-                    {
-                      "id": "cta",
-                      "type": "button",
-                      "text": "Explore Our Flavors",
-                      "variant": "primary"
-                    }
-                  ]
-                }
-              ]
-            },
-            "uiCode": {
-              "language": "html",
-              "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Crunchy & Cheesy Goodness</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #333; background-color: #FFF9F0; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }\n        header { background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%); color: white; padding: 2rem 0; }\n        .hero { text-align: center; padding: 4rem 1rem; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }\n        .hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto 2rem; color: #444; }\n        .btn-primary { background-color: #8B5CF6; color: white; border: none; padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s; }\n        .btn-primary:hover { background-color: #7C3AED; }\n        .section { padding: 4rem 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #FF6B00; }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }\n        .feature-card { background: white; border-radius: 0.5rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }\n        .feature-card h3 { color: #8B5CF6; margin-bottom: 1rem; }\n        .flavor-showcase { background-color: #F8F5FF; }\n        .flavor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }\n        .flavor-item { background: white; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }\n        .flavor-img { height: 180px; background-color: #FFD8B2; }\n        .flavor-content { padding: 1.5rem; }\n        .flavor-content h4 { color: #FF6B00; }\n        footer { background-color: #222; color: #ddd; text-align: center; padding: 2.5rem 0; margin-top: 3rem; }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container\">\n            <h1>The Cheeto Factory</h1>\n            <p>Crafting iconic crunch since day one.</p>\n        </div>\n    </header>\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Welcome to Crunch Central</h1>\n                <p>We are passionate artisans dedicated to creating the perfect balance of cheese, crunch, and joy. Every Cheeto is a masterpiece of snack engineering.</p>\n                <a href=\"#flavors\" class=\"btn-primary\">Explore Our Flavors</a>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"feature-card\">\n                        <h3>Premium Ingredients</h3>\n                        <p>We source only the finest corn and real cheese for an authentic, irresistible taste.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Perfect Crunch</h3>\n                        <p>Our proprietary process ensures the ideal texture in every single piece.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Endless Innovation</h3>\n                        <p>From classic cheese to bold new flavors, we're always pushing the crunchy envelope.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section id=\"flavors\" class=\"section flavor-showcase\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Classic Cheese</h4>\n                            <p>The original, legendary flavor that started it all. Bold, cheesy, and perfectly orange.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Flamin' Hot</h4>\n                            <p>A fiery twist that brings the heat. For those who like their crunch with a kick.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Extra Crunchy</h4>\n                            <p>For the ultimate crunch enthusiasts. A thicker, more satisfying snap in every bite.</p>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Crunch?</h2>\n                <p style=\"font-size: 1.2rem; margin-bottom: 2rem;\">Join the Cheeto Factory family. Find our snacks in a store near you.</p>\n                <a href=\"#\" class=\"btn-primary\">Find a Retailer</a>\n            </div>\n        </section>\n    </main>\n    <footer>\n        <div class=\"container\">\n            <p>&copy; <span id=\"year\">2024</span> The Cheeto Factory. All rights reserved.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">A fictional concept website for demonstration.</p>\n        </div>\n    </footer>\n    \n</body>\n</html>",
-              "sanitized": true
-            },
-            "diff": "Initial artifact for phase_a. Created a complete, themed HTML website for 'The Cheeto Factory' with hero, features, product showcase, and CTA sections. Used provided accent color (#8B5CF6) for primary actions and orange gradients for branding. Included a simple script only for dynamic copyright year, as allowed.",
-            "rubricResults": [
-              {
-                "criterion": "Theme Adherence",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Website fully embodies the 'Cheeto Factory' concept with appropriate color scheme, playful copy, and snack-focused content."
-              },
-              {
-                "criterion": "UI Completeness",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Includes a full website structure: header, hero, multiple content sections (craft, flavors, CTA), and a footer. All HTML is self-contained."
-              },
-              {
-                "criterion": "Code Safety & Constraints",
-                "score": 4,
-                "maxScore": 5,
-                "note": "No external assets, event handlers, or unsafe elements. Includes a minimal, benign script for current year display."
-              },
-              {
-                "criterion": "Visual Design",
-                "score": 4,
-                "maxScore": 5,
-                "note": "Uses consistent spacing, radius, and the provided accent color. Layout is responsive and visually cohesive."
-              }
-            ],
-            "details": {
-              "provider": "deepseek",
-              "generatedAt": "2026-02-24T23:27:24.860Z",
-              "contextArtifact": {
-                "intent": "Cheeto Factory Website",
-                "branchFactor": 2
-              }
-            }
-          },
-          "finishedAt": "2026-02-24T23:27:24.869Z"
+          "status": "DRAFT",
+          "artifacts": []
         },
         "phase_b": {
           "runId": "run_phase_a_poc",
           "phaseId": "phase_b",
           "attempt": 1,
-          "status": "APPROVED",
-          "artifacts": [
-            {
-              "artifactId": "art_417b2558-ab86-4009-bd1b-f20dda8d2274",
-              "kind": "json",
-              "uri": "db://artifacts/art_417b2558-ab86-4009-bd1b-f20dda8d2274"
-            },
-            {
-              "artifactId": "art_72be3245-149f-4dd2-9f07-aa947085cb5d",
-              "kind": "json",
-              "uri": "db://artifacts/art_72be3245-149f-4dd2-9f07-aa947085cb5d"
-            },
-            {
-              "artifactId": "art_d8bbbbbb-361f-44a7-b5ea-18d51c23a1c0",
-              "kind": "diff",
-              "uri": "db://artifacts/art_d8bbbbbb-361f-44a7-b5ea-18d51c23a1c0"
-            },
-            {
-              "artifactId": "art_3d912b3c-0f73-40ea-ac61-5896918e7a8e",
-              "kind": "rubric",
-              "uri": "db://artifacts/art_3d912b3c-0f73-40ea-ac61-5896918e7a8e"
-            },
-            {
-              "artifactId": "art_02d6dce8-1394-435a-b20b-30054bf7e3b9",
-              "kind": "json",
-              "uri": "db://artifacts/art_02d6dce8-1394-435a-b20b-30054bf7e3b9"
-            }
-          ],
-          "startedAt": "2026-02-24T23:27:24.873Z",
-          "output": {
-            "variantId": "phase_b",
-            "renderMode": "code",
-            "uiSchema": {
-              "version": 1,
-              "tokens": {
-                "accentColor": "#8B5CF6",
-                "radius": "md",
-                "spacing": "md"
-              },
-              "tree": [
-                {
-                  "id": "root",
-                  "type": "container",
-                  "children": [
-                    {
-                      "id": "title",
-                      "type": "heading",
-                      "text": "Welcome to The Cheeto Factory"
-                    },
-                    {
-                      "id": "desc",
-                      "type": "text",
-                      "text": "Discover the art and science behind the world's most iconic cheesy snack. From humble beginnings to global crunch, explore our story."
-                    },
-                    {
-                      "id": "cta",
-                      "type": "button",
-                      "text": "Explore Our Flavors",
-                      "variant": "primary"
-                    }
-                  ]
-                }
-              ]
-            },
-            "uiCode": {
-              "language": "html",
-              "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        :root {\n            --color-bg-dark: #0f0a15;\n            --color-surface: #1a1525;\n            --color-surface-light: #2a2438;\n            --color-accent: #8B5CF6;\n            --color-text: #f0e9ff;\n            --color-text-muted: #b8a9d9;\n            --radius: 10px;\n            --spacing: 1.5rem;\n        }\n        body {\n            font-family: system-ui, -apple-system, sans-serif;\n            background: var(--color-bg-dark);\n            color: var(--color-text);\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n            padding: 0 var(--spacing);\n        }\n        header {\n            padding: var(--spacing) 0;\n            border-bottom: 1px solid var(--color-surface-light);\n        }\n        .header-inner {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n        .logo {\n            font-size: 1.8rem;\n            font-weight: 800;\n            color: var(--color-accent);\n        }\n        nav ul {\n            display: flex;\n            list-style: none;\n            gap: calc(var(--spacing) * 1.5);\n        }\n        nav a {\n            color: var(--color-text-muted);\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.2s;\n        }\n        nav a:hover { color: var(--color-accent); }\n        .hero {\n            padding: calc(var(--spacing) * 4) 0;\n            text-align: center;\n            background: linear-gradient(to bottom, var(--color-surface), var(--color-bg-dark));\n            border-radius: 0 0 var(--radius) var(--radius);\n        }\n        .hero h1 {\n            font-size: 3.5rem;\n            margin-bottom: var(--spacing);\n            color: var(--color-text);\n            line-height: 1.2;\n        }\n        .hero p {\n            font-size: 1.3rem;\n            color: var(--color-text-muted);\n            max-width: 700px;\n            margin: 0 auto var(--spacing);\n        }\n        .btn {\n            display: inline-block;\n            background: var(--color-accent);\n            color: white;\n            padding: 1rem 2.5rem;\n            border-radius: var(--radius);\n            text-decoration: none;\n            font-weight: 700;\n            font-size: 1.1rem;\n            border: none;\n            cursor: pointer;\n            transition: opacity 0.2s;\n        }\n        .btn:hover { opacity: 0.9; }\n        .section {\n            padding: calc(var(--spacing) * 3) 0;\n        }\n        .section-title {\n            font-size: 2.2rem;\n            margin-bottom: var(--spacing);\n            text-align: center;\n        }\n        .section-subtitle {\n            color: var(--color-text-muted);\n            text-align: center;\n            max-width: 700px;\n            margin: 0 auto calc(var(--spacing) * 2);\n            font-size: 1.1rem;\n        }\n        .cards {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: var(--spacing);\n        }\n        .card {\n            background: var(--color-surface);\n            padding: var(--spacing);\n            border-radius: var(--radius);\n            border: 1px solid var(--color-surface-light);\n        }\n        .card h3 {\n            color: var(--color-accent);\n            margin-bottom: 0.75rem;\n            font-size: 1.5rem;\n        }\n        .card p { color: var(--color-text-muted); }\n        footer {\n            background: var(--color-surface);\n            padding: calc(var(--spacing) * 2) 0;\n            text-align: center;\n            border-top: 1px solid var(--color-surface-light);\n            margin-top: calc(var(--spacing) * 3);\n            color: var(--color-text-muted);\n        }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .header-inner { flex-direction: column; gap: var(--spacing); }\n            nav ul { gap: var(--spacing); }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container header-inner\">\n            <div class=\"logo\">The Cheeto Factory</div>\n            <nav>\n                <ul>\n                    <li><a href=\"#story\">Our Story</a></li>\n                    <li><a href=\"#process\">The Process</a></li>\n                    <li><a href=\"#flavors\">Flavors</a></li>\n                    <li><a href=\"#visit\">Visit</a></li>\n                </ul>\n            </nav>\n        </div>\n    </header>\n\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Crafting the Perfect Crunch Since 1948</h1>\n                <p>Step inside the world where cheese meets corn, and science creates snack magic. Every Cheeto is a masterpiece of flavor, texture, and pure joy.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"story\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">From Humble Beginnings</h2>\n                <p class=\"section-subtitle\">What started as a single cheesy puff in a small Michigan kitchen has grown into a global phenomenon, driven by passion and relentless innovation.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>The First Puff</h3>\n                        <p>Invented by accident in 1948, the original Cheeto was a happy mistake that changed snacking forever.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Global Reach</h3>\n                        <p>Today, our factories produce billions of perfectly crunchy pieces, enjoyed in over 30 countries.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Sustainable Snacking</h3>\n                        <p>We're committed to reducing our environmental footprint while maximizing cheesy delight.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"process\" style=\"background: var(--color-surface-light); border-radius: var(--radius);\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">The Art of the Crunch</h2>\n                <p class=\"section-subtitle\">Our proprietary process ensures every Cheeto has the ideal airy texture, bold cheese coating, and satisfying snap.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>Corn Selection</h3>\n                        <p>Only the finest non-GMO corn is used, milled to a precise consistency for the perfect puff base.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Cheese Mastery</h3>\n                        <p>Our signature cheese blend is aged and powdered to create that unmistakable, addictive flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Quality Control</h3>\n                        <p>Every batch is tested for crunch, color, and cheese coverage by our expert snackologists.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"cta-final\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Experience the Crunch?</h2>\n                <p class=\"section-subtitle\" style=\"margin-bottom: calc(var(--spacing) * 2.5);\">Join the Cheeto Factory family. Sign up for exclusive flavor previews, behind-the-scenes tours, and crunchy rewards.</p>\n                <a href=\"#signup\" class=\"btn\" style=\"font-size: 1.2rem; padding: 1.2rem 3rem;\">Sign Up for Crunch News</a>\n            </div>\n        </section>\n    </main>\n\n    <footer>\n        <div class=\"container\">\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website. No real products are sold here.</p>\n        </div>\n    </footer>\n</body>\n</html>",
-              "sanitized": false
-            },
-            "diff": "Initial artifact for phase_b. Full website concept with hero, story/process sections, cards, and clear CTAs. Darker color scheme applied with high contrast surfaces and accessible text.",
-            "rubricResults": [
-              {
-                "criterion": "Completeness of Concept",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Delivers a full, multi-section website with hero, narrative content, feature cards, and clear calls-to-action, fully meeting the intent."
-              },
-              {
-                "criterion": "Visual Design & Accessibility",
-                "score": 4,
-                "maxScore": 5,
-                "note": "Darker color scheme with high contrast surfaces is implemented effectively. Text is readable. Could slightly increase contrast for some muted text for perfect AAA compliance."
-              },
-              {
-                "criterion": "Code Quality & Safety",
-                "score": 5,
-                "maxScore": 5,
-                "note": "HTML/CSS is self-contained, uses no external assets, scripts, or unsafe elements. Structure is semantic and responsive."
-              },
-              {
-                "criterion": "Adherence to Theme",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Perfectly captures the 'Cheeto Factory' concept with playful yet professional copy and a focus on the product's story and process."
-              }
-            ],
-            "details": {
-              "provider": "deepseek",
-              "generatedAt": "2026-02-24T23:28:15.910Z",
-              "permutationMode": "darker",
-              "permutationIntensity": 0,
-              "permutationIndex": 0,
-              "permutationTotal": 2,
-              "source": "auto_phase_a_permutation"
-            }
-          },
-          "finishedAt": "2026-02-24T23:28:15.932Z"
+          "status": "BLOCKED",
+          "artifacts": []
         },
         "phase_c": {
           "runId": "run_phase_a_poc",
           "phaseId": "phase_c",
           "attempt": 1,
-          "status": "APPROVED",
-          "artifacts": [
-            {
-              "artifactId": "art_2fc80de2-24c6-4655-9791-bc6df14be079",
-              "kind": "json",
-              "uri": "db://artifacts/art_2fc80de2-24c6-4655-9791-bc6df14be079"
-            },
-            {
-              "artifactId": "art_f8818963-0c12-430b-8689-5ae101b272a4",
-              "kind": "json",
-              "uri": "db://artifacts/art_f8818963-0c12-430b-8689-5ae101b272a4"
-            },
-            {
-              "artifactId": "art_3ac72510-0bc4-4d46-b657-ee0f97d56808",
-              "kind": "diff",
-              "uri": "db://artifacts/art_3ac72510-0bc4-4d46-b657-ee0f97d56808"
-            },
-            {
-              "artifactId": "art_222196c1-7aaa-424a-a96f-505ff62b7181",
-              "kind": "rubric",
-              "uri": "db://artifacts/art_222196c1-7aaa-424a-a96f-505ff62b7181"
-            },
-            {
-              "artifactId": "art_6986f8d8-f836-47cd-abcc-65c3f51d693d",
-              "kind": "json",
-              "uri": "db://artifacts/art_6986f8d8-f836-47cd-abcc-65c3f51d693d"
-            }
-          ],
-          "startedAt": "2026-02-24T23:27:24.875Z",
-          "output": {
-            "variantId": "phase_c",
-            "renderMode": "code",
-            "uiSchema": {
-              "version": 1,
-              "tokens": {
-                "accentColor": "#8B5CF6",
-                "radius": "md",
-                "spacing": "md"
-              },
-              "tree": [
-                {
-                  "id": "root",
-                  "type": "container",
-                  "children": [
-                    {
-                      "id": "title",
-                      "type": "heading",
-                      "text": "Welcome to the Cheeto Factory"
-                    },
-                    {
-                      "id": "desc",
-                      "type": "text",
-                      "text": "Discover the art and science behind the world's favorite cheesy snack. From our signature crunch to our bold flavors, we craft every Cheeto with passion."
-                    },
-                    {
-                      "id": "cta",
-                      "type": "button",
-                      "text": "Explore Our Flavors",
-                      "variant": "primary"
-                    }
-                  ]
-                }
-              ]
-            },
-            "uiCode": {
-              "language": "html",
-              "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }\n        :root { --accent: #8B5CF6; --radius: 12px; --spacing: 1.5rem; --surface-light: #fef7ff; --surface-lighter: #ffffff; --text-primary: #1f1f2a; --text-secondary: #4a4a5e; }\n        body { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 50%, #f0f4ff 100%); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing); }\n        header { padding: calc(var(--spacing) * 2) 0; display: flex; justify-content: space-between; align-items: center; }\n        .logo { font-weight: 800; font-size: 1.8rem; color: var(--accent); }\n        nav a { margin-left: var(--spacing); text-decoration: none; color: var(--text-secondary); font-weight: 500; }\n        nav a:hover { color: var(--accent); }\n        .hero { text-align: center; padding: calc(var(--spacing) * 4) 0; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: var(--spacing); color: var(--text-primary); line-height: 1.2; }\n        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto var(--spacing); color: var(--text-secondary); }\n        .btn { display: inline-block; background: var(--accent); color: white; padding: 1rem 2.5rem; border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }\n        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25); }\n        section { padding: calc(var(--spacing) * 3) 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: calc(var(--spacing) * 2); color: var(--text-primary); }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing); }\n        .card { background: var(--surface-lighter); padding: calc(var(--spacing) * 1.5); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }\n        .card h3 { color: var(--accent); margin-bottom: 0.75rem; font-size: 1.5rem; }\n        .flavors { background: var(--surface-light); border-radius: var(--radius); padding: calc(var(--spacing) * 2); }\n        .flavor-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing); margin-top: var(--spacing); }\n        .flavor-pill { background: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }\n        .flavor-pill.cheesy { border-left: 5px solid #FFD700; }\n        .flavor-pill.flamin { border-left: 5px solid #FF4500; }\n        .flavor-pill.jalapeno { border-left: 5px solid #32CD32; }\n        .cta-section { text-align: center; background: linear-gradient(to right, #8B5CF6, #6D28D9); color: white; padding: calc(var(--spacing) * 4) var(--spacing); border-radius: var(--radius); margin: calc(var(--spacing) * 3) 0; }\n        .cta-section h2 { font-size: 2.8rem; margin-bottom: var(--spacing); }\n        .cta-section .btn { background: white; color: var(--accent); margin-top: var(--spacing); }\n        footer { text-align: center; padding: calc(var(--spacing) * 2) 0; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.08); margin-top: calc(var(--spacing) * 3); }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n            header { flex-direction: column; gap: var(--spacing); }\n            nav a { margin: 0 0.75rem; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo\">CHEETO FACTORY</div>\n            <nav>\n                <a href=\"#\">Home</a>\n                <a href=\"#\">Our Story</a>\n                <a href=\"#\">Flavors</a>\n                <a href=\"#\">Visit</a>\n                <a href=\"#\">Contact</a>\n            </nav>\n        </header>\n        <main>\n            <section class=\"hero\">\n                <h1>Where Crunch Meets Cheesy Perfection</h1>\n                <p>Step inside the legendary Cheeto Factory. We've been crafting irresistibly cheesy, perfectly crunchy snacks for decades, using only the finest ingredients and a whole lot of fun.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </section>\n            <section>\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"card\">\n                        <h3>Signature Crunch</h3>\n                        <p>Our proprietary process creates the light, airy, and satisfying crunch that has defined the Cheeto experience since day one.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Bold Cheese Blend</h3>\n                        <p>We use a secret combination of aged cheddar and other savory cheeses to create our iconic, finger-dusting flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Fun in Every Bag</h3>\n                        <p>From the shape to the color, we design our snacks to bring a moment of joy and playfulness to your day.</p>\n                    </div>\n                </div>\n            </section>\n            <section id=\"flavors\" class=\"flavors\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <p style=\"text-align: center; margin-bottom: var(--spacing);\">Discover the range of tastes that have made us a household name.</p>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-pill cheesy\">Classic Cheesy</div>\n                    <div class=\"flavor-pill flamin\">Flamin' Hot</div>\n                    <div class=\"flavor-pill jalapeno\">Jalapeño Cheddar</div>\n                    <div class=\"flavor-pill\">White Cheddar</div>\n                    <div class=\"flavor-pill\">Crunchy XXTRA Flamin' Hot</div>\n                    <div class=\"flavor-pill\">Puff'd Corn</div>\n                </div>\n            </section>\n            <section class=\"cta-section\">\n                <h2>Ready for a Factory Tour?</h2>\n                <p>Book a behind-the-scenes tour to see the magic happen, smell the cheese, and get a sample of our latest creations hot off the line.</p>\n                <a href=\"#\" class=\"btn\">Schedule Your Visit</a>\n            </section>\n        </main>\n        <footer>\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website preview. No real products are sold here.</p>\n        </footer>\n    </div>\n</body>\n</html>",
-              "sanitized": false
-            },
-            "diff": "Initial artifact for phase_c. Full website concept with hero, features, flavor showcase, and CTA sections. Lighter gradient background applied per permutation mode.",
-            "rubricResults": [
-              {
-                "criterion": "Completeness of Concept",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Delivers a full, multi-section website with hero, value propositions, product showcase, and clear CTA."
-              },
-              {
-                "criterion": "Visual Design & Accessibility",
-                "score": 4,
-                "maxScore": 5,
-                "note": "Lighter color scheme is bright and readable with good contrast. Could improve text size hierarchy slightly on mobile."
-              },
-              {
-                "criterion": "Code Safety & Constraints",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Fully compliant: no scripts, handlers, or external assets. All styling is inline and safe."
-              },
-              {
-                "criterion": "Brand & Theme Alignment",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Effectively conveys the fun, cheesy, and craft-oriented theme of a Cheeto factory."
-              }
-            ],
-            "details": {
-              "provider": "deepseek",
-              "generatedAt": "2026-02-24T23:28:11.727Z",
-              "permutationMode": "lighter",
-              "permutationIntensity": 1,
-              "permutationIndex": 1,
-              "permutationTotal": 2,
-              "source": "auto_phase_a_permutation"
-            }
-          },
-          "finishedAt": "2026-02-24T23:28:11.739Z"
+          "status": "BLOCKED",
+          "artifacts": []
         },
         "phase_d": {
           "runId": "run_phase_a_poc",
           "phaseId": "phase_d",
           "attempt": 1,
-          "status": "DRAFT",
-          "artifacts": [
-            {
-              "artifactId": "art_398da620-5bd0-4ac6-bb32-016fdc886622",
-              "kind": "json",
-              "uri": "db://artifacts/art_398da620-5bd0-4ac6-bb32-016fdc886622"
-            }
-          ],
-          "output": {
-            "variantId": "phase_d_compare_1771975695937",
-            "renderMode": "schema",
-            "uiSchema": {
-              "version": 1,
-              "tokens": {
-                "accentColor": "#8B5CF6",
-                "radius": "md",
-                "spacing": "md"
-              },
-              "tree": [
-                {
-                  "id": "phase_d_root",
-                  "type": "container",
-                  "children": [
-                    {
-                      "id": "phase_d_title",
-                      "type": "heading",
-                      "text": "Preview for phase_d"
-                    },
-                    {
-                      "id": "phase_d_body",
-                      "type": "text",
-                      "text": "Model output was normalized into constrained preview components."
-                    },
-                    {
-                      "id": "phase_d_cta",
-                      "type": "button",
-                      "text": "Primary Action",
-                      "variant": "primary"
-                    }
-                  ]
-                }
-              ]
-            },
-            "diff": "Generated 2 variant(s) for merge review.",
-            "rubricResults": [
-              {
-                "criterion": "Variant coverage",
-                "score": 5,
-                "maxScore": 5,
-                "note": "Preloaded variant candidates before human merge"
-              }
-            ],
-            "details": {
-              "source": "auto_phase_a_variant_collection",
-              "generatedVariants": [
-                {
-                  "variantId": "phase_b",
-                  "label": "Very Dark Variant",
-                  "status": "APPROVED",
-                  "provider": "deepseek",
-                  "output": {
-                    "variantId": "phase_b",
-                    "renderMode": "code",
-                    "uiSchema": {
-                      "version": 1,
-                      "tokens": {
-                        "accentColor": "#8B5CF6",
-                        "radius": "md",
-                        "spacing": "md"
-                      },
-                      "tree": [
-                        {
-                          "id": "root",
-                          "type": "container",
-                          "children": [
-                            {
-                              "id": "title",
-                              "type": "heading",
-                              "text": "Welcome to The Cheeto Factory"
-                            },
-                            {
-                              "id": "desc",
-                              "type": "text",
-                              "text": "Discover the art and science behind the world's most iconic cheesy snack. From humble beginnings to global crunch, explore our story."
-                            },
-                            {
-                              "id": "cta",
-                              "type": "button",
-                              "text": "Explore Our Flavors",
-                              "variant": "primary"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    "uiCode": {
-                      "language": "html",
-                      "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        :root {\n            --color-bg-dark: #0f0a15;\n            --color-surface: #1a1525;\n            --color-surface-light: #2a2438;\n            --color-accent: #8B5CF6;\n            --color-text: #f0e9ff;\n            --color-text-muted: #b8a9d9;\n            --radius: 10px;\n            --spacing: 1.5rem;\n        }\n        body {\n            font-family: system-ui, -apple-system, sans-serif;\n            background: var(--color-bg-dark);\n            color: var(--color-text);\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n            padding: 0 var(--spacing);\n        }\n        header {\n            padding: var(--spacing) 0;\n            border-bottom: 1px solid var(--color-surface-light);\n        }\n        .header-inner {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n        .logo {\n            font-size: 1.8rem;\n            font-weight: 800;\n            color: var(--color-accent);\n        }\n        nav ul {\n            display: flex;\n            list-style: none;\n            gap: calc(var(--spacing) * 1.5);\n        }\n        nav a {\n            color: var(--color-text-muted);\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.2s;\n        }\n        nav a:hover { color: var(--color-accent); }\n        .hero {\n            padding: calc(var(--spacing) * 4) 0;\n            text-align: center;\n            background: linear-gradient(to bottom, var(--color-surface), var(--color-bg-dark));\n            border-radius: 0 0 var(--radius) var(--radius);\n        }\n        .hero h1 {\n            font-size: 3.5rem;\n            margin-bottom: var(--spacing);\n            color: var(--color-text);\n            line-height: 1.2;\n        }\n        .hero p {\n            font-size: 1.3rem;\n            color: var(--color-text-muted);\n            max-width: 700px;\n            margin: 0 auto var(--spacing);\n        }\n        .btn {\n            display: inline-block;\n            background: var(--color-accent);\n            color: white;\n            padding: 1rem 2.5rem;\n            border-radius: var(--radius);\n            text-decoration: none;\n            font-weight: 700;\n            font-size: 1.1rem;\n            border: none;\n            cursor: pointer;\n            transition: opacity 0.2s;\n        }\n        .btn:hover { opacity: 0.9; }\n        .section {\n            padding: calc(var(--spacing) * 3) 0;\n        }\n        .section-title {\n            font-size: 2.2rem;\n            margin-bottom: var(--spacing);\n            text-align: center;\n        }\n        .section-subtitle {\n            color: var(--color-text-muted);\n            text-align: center;\n            max-width: 700px;\n            margin: 0 auto calc(var(--spacing) * 2);\n            font-size: 1.1rem;\n        }\n        .cards {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: var(--spacing);\n        }\n        .card {\n            background: var(--color-surface);\n            padding: var(--spacing);\n            border-radius: var(--radius);\n            border: 1px solid var(--color-surface-light);\n        }\n        .card h3 {\n            color: var(--color-accent);\n            margin-bottom: 0.75rem;\n            font-size: 1.5rem;\n        }\n        .card p { color: var(--color-text-muted); }\n        footer {\n            background: var(--color-surface);\n            padding: calc(var(--spacing) * 2) 0;\n            text-align: center;\n            border-top: 1px solid var(--color-surface-light);\n            margin-top: calc(var(--spacing) * 3);\n            color: var(--color-text-muted);\n        }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .header-inner { flex-direction: column; gap: var(--spacing); }\n            nav ul { gap: var(--spacing); }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container header-inner\">\n            <div class=\"logo\">The Cheeto Factory</div>\n            <nav>\n                <ul>\n                    <li><a href=\"#story\">Our Story</a></li>\n                    <li><a href=\"#process\">The Process</a></li>\n                    <li><a href=\"#flavors\">Flavors</a></li>\n                    <li><a href=\"#visit\">Visit</a></li>\n                </ul>\n            </nav>\n        </div>\n    </header>\n\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Crafting the Perfect Crunch Since 1948</h1>\n                <p>Step inside the world where cheese meets corn, and science creates snack magic. Every Cheeto is a masterpiece of flavor, texture, and pure joy.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"story\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">From Humble Beginnings</h2>\n                <p class=\"section-subtitle\">What started as a single cheesy puff in a small Michigan kitchen has grown into a global phenomenon, driven by passion and relentless innovation.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>The First Puff</h3>\n                        <p>Invented by accident in 1948, the original Cheeto was a happy mistake that changed snacking forever.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Global Reach</h3>\n                        <p>Today, our factories produce billions of perfectly crunchy pieces, enjoyed in over 30 countries.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Sustainable Snacking</h3>\n                        <p>We're committed to reducing our environmental footprint while maximizing cheesy delight.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"process\" style=\"background: var(--color-surface-light); border-radius: var(--radius);\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">The Art of the Crunch</h2>\n                <p class=\"section-subtitle\">Our proprietary process ensures every Cheeto has the ideal airy texture, bold cheese coating, and satisfying snap.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>Corn Selection</h3>\n                        <p>Only the finest non-GMO corn is used, milled to a precise consistency for the perfect puff base.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Cheese Mastery</h3>\n                        <p>Our signature cheese blend is aged and powdered to create that unmistakable, addictive flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Quality Control</h3>\n                        <p>Every batch is tested for crunch, color, and cheese coverage by our expert snackologists.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"cta-final\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Experience the Crunch?</h2>\n                <p class=\"section-subtitle\" style=\"margin-bottom: calc(var(--spacing) * 2.5);\">Join the Cheeto Factory family. Sign up for exclusive flavor previews, behind-the-scenes tours, and crunchy rewards.</p>\n                <a href=\"#signup\" class=\"btn\" style=\"font-size: 1.2rem; padding: 1.2rem 3rem;\">Sign Up for Crunch News</a>\n            </div>\n        </section>\n    </main>\n\n    <footer>\n        <div class=\"container\">\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website. No real products are sold here.</p>\n        </div>\n    </footer>\n</body>\n</html>",
-                      "sanitized": false
-                    },
-                    "diff": "Initial artifact for phase_b. Full website concept with hero, story/process sections, cards, and clear CTAs. Darker color scheme applied with high contrast surfaces and accessible text.",
-                    "rubricResults": [
-                      {
-                        "criterion": "Completeness of Concept",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "Delivers a full, multi-section website with hero, narrative content, feature cards, and clear calls-to-action, fully meeting the intent."
-                      },
-                      {
-                        "criterion": "Visual Design & Accessibility",
-                        "score": 4,
-                        "maxScore": 5,
-                        "note": "Darker color scheme with high contrast surfaces is implemented effectively. Text is readable. Could slightly increase contrast for some muted text for perfect AAA compliance."
-                      },
-                      {
-                        "criterion": "Code Quality & Safety",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "HTML/CSS is self-contained, uses no external assets, scripts, or unsafe elements. Structure is semantic and responsive."
-                      },
-                      {
-                        "criterion": "Adherence to Theme",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "Perfectly captures the 'Cheeto Factory' concept with playful yet professional copy and a focus on the product's story and process."
-                      }
-                    ],
-                    "details": {
-                      "provider": "deepseek",
-                      "generatedAt": "2026-02-24T23:28:15.910Z",
-                      "permutationMode": "darker",
-                      "permutationIntensity": 0,
-                      "permutationIndex": 0,
-                      "permutationTotal": 2,
-                      "source": "auto_phase_a_permutation"
-                    }
-                  }
-                },
-                {
-                  "variantId": "phase_c",
-                  "label": "Very Light Variant",
-                  "status": "APPROVED",
-                  "provider": "deepseek",
-                  "output": {
-                    "variantId": "phase_c",
-                    "renderMode": "code",
-                    "uiSchema": {
-                      "version": 1,
-                      "tokens": {
-                        "accentColor": "#8B5CF6",
-                        "radius": "md",
-                        "spacing": "md"
-                      },
-                      "tree": [
-                        {
-                          "id": "root",
-                          "type": "container",
-                          "children": [
-                            {
-                              "id": "title",
-                              "type": "heading",
-                              "text": "Welcome to the Cheeto Factory"
-                            },
-                            {
-                              "id": "desc",
-                              "type": "text",
-                              "text": "Discover the art and science behind the world's favorite cheesy snack. From our signature crunch to our bold flavors, we craft every Cheeto with passion."
-                            },
-                            {
-                              "id": "cta",
-                              "type": "button",
-                              "text": "Explore Our Flavors",
-                              "variant": "primary"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    "uiCode": {
-                      "language": "html",
-                      "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }\n        :root { --accent: #8B5CF6; --radius: 12px; --spacing: 1.5rem; --surface-light: #fef7ff; --surface-lighter: #ffffff; --text-primary: #1f1f2a; --text-secondary: #4a4a5e; }\n        body { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 50%, #f0f4ff 100%); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing); }\n        header { padding: calc(var(--spacing) * 2) 0; display: flex; justify-content: space-between; align-items: center; }\n        .logo { font-weight: 800; font-size: 1.8rem; color: var(--accent); }\n        nav a { margin-left: var(--spacing); text-decoration: none; color: var(--text-secondary); font-weight: 500; }\n        nav a:hover { color: var(--accent); }\n        .hero { text-align: center; padding: calc(var(--spacing) * 4) 0; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: var(--spacing); color: var(--text-primary); line-height: 1.2; }\n        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto var(--spacing); color: var(--text-secondary); }\n        .btn { display: inline-block; background: var(--accent); color: white; padding: 1rem 2.5rem; border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }\n        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25); }\n        section { padding: calc(var(--spacing) * 3) 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: calc(var(--spacing) * 2); color: var(--text-primary); }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing); }\n        .card { background: var(--surface-lighter); padding: calc(var(--spacing) * 1.5); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }\n        .card h3 { color: var(--accent); margin-bottom: 0.75rem; font-size: 1.5rem; }\n        .flavors { background: var(--surface-light); border-radius: var(--radius); padding: calc(var(--spacing) * 2); }\n        .flavor-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing); margin-top: var(--spacing); }\n        .flavor-pill { background: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }\n        .flavor-pill.cheesy { border-left: 5px solid #FFD700; }\n        .flavor-pill.flamin { border-left: 5px solid #FF4500; }\n        .flavor-pill.jalapeno { border-left: 5px solid #32CD32; }\n        .cta-section { text-align: center; background: linear-gradient(to right, #8B5CF6, #6D28D9); color: white; padding: calc(var(--spacing) * 4) var(--spacing); border-radius: var(--radius); margin: calc(var(--spacing) * 3) 0; }\n        .cta-section h2 { font-size: 2.8rem; margin-bottom: var(--spacing); }\n        .cta-section .btn { background: white; color: var(--accent); margin-top: var(--spacing); }\n        footer { text-align: center; padding: calc(var(--spacing) * 2) 0; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.08); margin-top: calc(var(--spacing) * 3); }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n            header { flex-direction: column; gap: var(--spacing); }\n            nav a { margin: 0 0.75rem; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo\">CHEETO FACTORY</div>\n            <nav>\n                <a href=\"#\">Home</a>\n                <a href=\"#\">Our Story</a>\n                <a href=\"#\">Flavors</a>\n                <a href=\"#\">Visit</a>\n                <a href=\"#\">Contact</a>\n            </nav>\n        </header>\n        <main>\n            <section class=\"hero\">\n                <h1>Where Crunch Meets Cheesy Perfection</h1>\n                <p>Step inside the legendary Cheeto Factory. We've been crafting irresistibly cheesy, perfectly crunchy snacks for decades, using only the finest ingredients and a whole lot of fun.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </section>\n            <section>\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"card\">\n                        <h3>Signature Crunch</h3>\n                        <p>Our proprietary process creates the light, airy, and satisfying crunch that has defined the Cheeto experience since day one.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Bold Cheese Blend</h3>\n                        <p>We use a secret combination of aged cheddar and other savory cheeses to create our iconic, finger-dusting flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Fun in Every Bag</h3>\n                        <p>From the shape to the color, we design our snacks to bring a moment of joy and playfulness to your day.</p>\n                    </div>\n                </div>\n            </section>\n            <section id=\"flavors\" class=\"flavors\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <p style=\"text-align: center; margin-bottom: var(--spacing);\">Discover the range of tastes that have made us a household name.</p>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-pill cheesy\">Classic Cheesy</div>\n                    <div class=\"flavor-pill flamin\">Flamin' Hot</div>\n                    <div class=\"flavor-pill jalapeno\">Jalapeño Cheddar</div>\n                    <div class=\"flavor-pill\">White Cheddar</div>\n                    <div class=\"flavor-pill\">Crunchy XXTRA Flamin' Hot</div>\n                    <div class=\"flavor-pill\">Puff'd Corn</div>\n                </div>\n            </section>\n            <section class=\"cta-section\">\n                <h2>Ready for a Factory Tour?</h2>\n                <p>Book a behind-the-scenes tour to see the magic happen, smell the cheese, and get a sample of our latest creations hot off the line.</p>\n                <a href=\"#\" class=\"btn\">Schedule Your Visit</a>\n            </section>\n        </main>\n        <footer>\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website preview. No real products are sold here.</p>\n        </footer>\n    </div>\n</body>\n</html>",
-                      "sanitized": false
-                    },
-                    "diff": "Initial artifact for phase_c. Full website concept with hero, features, flavor showcase, and CTA sections. Lighter gradient background applied per permutation mode.",
-                    "rubricResults": [
-                      {
-                        "criterion": "Completeness of Concept",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "Delivers a full, multi-section website with hero, value propositions, product showcase, and clear CTA."
-                      },
-                      {
-                        "criterion": "Visual Design & Accessibility",
-                        "score": 4,
-                        "maxScore": 5,
-                        "note": "Lighter color scheme is bright and readable with good contrast. Could improve text size hierarchy slightly on mobile."
-                      },
-                      {
-                        "criterion": "Code Safety & Constraints",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "Fully compliant: no scripts, handlers, or external assets. All styling is inline and safe."
-                      },
-                      {
-                        "criterion": "Brand & Theme Alignment",
-                        "score": 5,
-                        "maxScore": 5,
-                        "note": "Effectively conveys the fun, cheesy, and craft-oriented theme of a Cheeto factory."
-                      }
-                    ],
-                    "details": {
-                      "provider": "deepseek",
-                      "generatedAt": "2026-02-24T23:28:11.727Z",
-                      "permutationMode": "lighter",
-                      "permutationIntensity": 1,
-                      "permutationIndex": 1,
-                      "permutationTotal": 2,
-                      "source": "auto_phase_a_permutation"
-                    }
-                  }
-                }
-              ]
-            }
-          }
+          "status": "BLOCKED",
+          "artifacts": []
         },
         "phase_e": {
           "runId": "run_phase_a_poc",
@@ -768,29 +863,14 @@
     }
   },
   "artifacts": {
-    "art_ef01f48d-ba21-409e-9d7c-8d9fcb110bc4": {
-      "artifactId": "art_ef01f48d-ba21-409e-9d7c-8d9fcb110bc4",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
+    "art_453001f6-55f0-41db-a9df-63528db3251f": {
+      "artifactId": "art_453001f6-55f0-41db-a9df-63528db3251f",
+      "runId": "run_milestone_4_artifacts",
+      "phaseId": "phase_b",
       "attempt": 1,
       "kind": "json",
-      "uri": "db://artifacts/art_ef01f48d-ba21-409e-9d7c-8d9fcb110bc4",
-      "createdAt": "2026-02-24T23:27:24.861Z",
-      "data": {
-        "contextArtifact": {
-          "intent": "Cheeto Factory Website",
-          "branchFactor": 2
-        }
-      }
-    },
-    "art_7cacc5e8-6365-44e1-8478-5a8656f93b93": {
-      "artifactId": "art_7cacc5e8-6365-44e1-8478-5a8656f93b93",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_7cacc5e8-6365-44e1-8478-5a8656f93b93",
-      "createdAt": "2026-02-24T23:27:24.863Z",
+      "uri": "db://artifacts/art_453001f6-55f0-41db-a9df-63528db3251f",
+      "createdAt": "2026-02-25T00:22:03.539Z",
       "data": {
         "uiSchema": {
           "version": 1,
@@ -801,23 +881,23 @@
           },
           "tree": [
             {
-              "id": "root",
+              "id": "phase_b_root",
               "type": "container",
               "children": [
                 {
-                  "id": "title",
+                  "id": "phase_b_title",
                   "type": "heading",
-                  "text": "Welcome to The Cheeto Factory"
+                  "text": "Preview for phase_b"
                 },
                 {
-                  "id": "desc",
+                  "id": "phase_b_body",
                   "type": "text",
-                  "text": "Discover the art of crafting the world's most delicious, crunchy, and cheesy snacks."
+                  "text": "Model output was normalized into constrained preview components."
                 },
                 {
-                  "id": "cta",
+                  "id": "phase_b_cta",
                   "type": "button",
-                  "text": "Explore Our Flavors",
+                  "text": "Primary Action",
                   "variant": "primary"
                 }
               ]
@@ -826,83 +906,49 @@
         }
       }
     },
-    "art_c9bc68bc-19d3-431f-a42f-d50884a306b1": {
-      "artifactId": "art_c9bc68bc-19d3-431f-a42f-d50884a306b1",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_c9bc68bc-19d3-431f-a42f-d50884a306b1",
-      "createdAt": "2026-02-24T23:27:24.864Z",
-      "data": {
-        "uiCode": {
-          "language": "html",
-          "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Crunchy & Cheesy Goodness</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #333; background-color: #FFF9F0; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }\n        header { background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%); color: white; padding: 2rem 0; }\n        .hero { text-align: center; padding: 4rem 1rem; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }\n        .hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto 2rem; color: #444; }\n        .btn-primary { background-color: #8B5CF6; color: white; border: none; padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s; }\n        .btn-primary:hover { background-color: #7C3AED; }\n        .section { padding: 4rem 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #FF6B00; }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }\n        .feature-card { background: white; border-radius: 0.5rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }\n        .feature-card h3 { color: #8B5CF6; margin-bottom: 1rem; }\n        .flavor-showcase { background-color: #F8F5FF; }\n        .flavor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }\n        .flavor-item { background: white; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }\n        .flavor-img { height: 180px; background-color: #FFD8B2; }\n        .flavor-content { padding: 1.5rem; }\n        .flavor-content h4 { color: #FF6B00; }\n        footer { background-color: #222; color: #ddd; text-align: center; padding: 2.5rem 0; margin-top: 3rem; }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container\">\n            <h1>The Cheeto Factory</h1>\n            <p>Crafting iconic crunch since day one.</p>\n        </div>\n    </header>\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Welcome to Crunch Central</h1>\n                <p>We are passionate artisans dedicated to creating the perfect balance of cheese, crunch, and joy. Every Cheeto is a masterpiece of snack engineering.</p>\n                <a href=\"#flavors\" class=\"btn-primary\">Explore Our Flavors</a>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"feature-card\">\n                        <h3>Premium Ingredients</h3>\n                        <p>We source only the finest corn and real cheese for an authentic, irresistible taste.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Perfect Crunch</h3>\n                        <p>Our proprietary process ensures the ideal texture in every single piece.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Endless Innovation</h3>\n                        <p>From classic cheese to bold new flavors, we're always pushing the crunchy envelope.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section id=\"flavors\" class=\"section flavor-showcase\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Classic Cheese</h4>\n                            <p>The original, legendary flavor that started it all. Bold, cheesy, and perfectly orange.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Flamin' Hot</h4>\n                            <p>A fiery twist that brings the heat. For those who like their crunch with a kick.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Extra Crunchy</h4>\n                            <p>For the ultimate crunch enthusiasts. A thicker, more satisfying snap in every bite.</p>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Crunch?</h2>\n                <p style=\"font-size: 1.2rem; margin-bottom: 2rem;\">Join the Cheeto Factory family. Find our snacks in a store near you.</p>\n                <a href=\"#\" class=\"btn-primary\">Find a Retailer</a>\n            </div>\n        </section>\n    </main>\n    <footer>\n        <div class=\"container\">\n            <p>&copy; <span id=\"year\">2024</span> The Cheeto Factory. All rights reserved.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">A fictional concept website for demonstration.</p>\n        </div>\n    </footer>\n    \n</body>\n</html>",
-          "sanitized": true
-        }
-      }
-    },
-    "art_d28d58de-38c4-4978-92e3-88b6ca0eea10": {
-      "artifactId": "art_d28d58de-38c4-4978-92e3-88b6ca0eea10",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
+    "art_f5d1028b-1883-4188-ae57-416e6311f6b6": {
+      "artifactId": "art_f5d1028b-1883-4188-ae57-416e6311f6b6",
+      "runId": "run_milestone_4_artifacts",
+      "phaseId": "phase_b",
       "attempt": 1,
       "kind": "diff",
-      "uri": "db://artifacts/art_d28d58de-38c4-4978-92e3-88b6ca0eea10",
-      "createdAt": "2026-02-24T23:27:24.864Z",
+      "uri": "db://artifacts/art_f5d1028b-1883-4188-ae57-416e6311f6b6",
+      "createdAt": "2026-02-25T00:22:03.539Z",
       "data": {
-        "diff": "Initial artifact for phase_a. Created a complete, themed HTML website for 'The Cheeto Factory' with hero, features, product showcase, and CTA sections. Used provided accent color (#8B5CF6) for primary actions and orange gradients for branding. Included a simple script only for dynamic copyright year, as allowed."
+        "diff": "Mock persisted diff output"
       }
     },
-    "art_1c21670a-c726-4144-af2e-ca39a3d50214": {
-      "artifactId": "art_1c21670a-c726-4144-af2e-ca39a3d50214",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
+    "art_0abd63be-9992-4882-bcdd-5f114b910d83": {
+      "artifactId": "art_0abd63be-9992-4882-bcdd-5f114b910d83",
+      "runId": "run_milestone_4_artifacts",
+      "phaseId": "phase_b",
       "attempt": 1,
       "kind": "rubric",
-      "uri": "db://artifacts/art_1c21670a-c726-4144-af2e-ca39a3d50214",
-      "createdAt": "2026-02-24T23:27:24.865Z",
+      "uri": "db://artifacts/art_0abd63be-9992-4882-bcdd-5f114b910d83",
+      "createdAt": "2026-02-25T00:22:03.540Z",
       "data": {
         "rubricResults": [
           {
-            "criterion": "Theme Adherence",
-            "score": 5,
+            "criterion": "Structured output parse",
+            "score": 3,
             "maxScore": 5,
-            "note": "Website fully embodies the 'Cheeto Factory' concept with appropriate color scheme, playful copy, and snack-focused content."
-          },
-          {
-            "criterion": "UI Completeness",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Includes a full website structure: header, hero, multiple content sections (craft, flavors, CTA), and a footer. All HTML is self-contained."
-          },
-          {
-            "criterion": "Code Safety & Constraints",
-            "score": 4,
-            "maxScore": 5,
-            "note": "No external assets, event handlers, or unsafe elements. Includes a minimal, benign script for current year display."
-          },
-          {
-            "criterion": "Visual Design",
-            "score": 4,
-            "maxScore": 5,
-            "note": "Uses consistent spacing, radius, and the provided accent color. Layout is responsive and visually cohesive."
+            "note": "Response was non-JSON; fallback preview used"
           }
         ]
       }
     },
-    "art_f8ad13fc-08da-4648-90ec-d07fac6bc3cd": {
-      "artifactId": "art_f8ad13fc-08da-4648-90ec-d07fac6bc3cd",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_a",
+    "art_c356222d-6d7e-4663-8a19-96f240972e0a": {
+      "artifactId": "art_c356222d-6d7e-4663-8a19-96f240972e0a",
+      "runId": "run_milestone_4_artifacts",
+      "phaseId": "phase_b",
       "attempt": 1,
       "kind": "json",
-      "uri": "db://artifacts/art_f8ad13fc-08da-4648-90ec-d07fac6bc3cd",
-      "createdAt": "2026-02-24T23:27:24.867Z",
+      "uri": "db://artifacts/art_c356222d-6d7e-4663-8a19-96f240972e0a",
+      "createdAt": "2026-02-25T00:22:03.541Z",
       "data": {
         "output": {
-          "variantId": "context_v0",
-          "renderMode": "code",
+          "variantId": "phase_b_variant_1771978923538",
+          "renderMode": "schema",
           "uiSchema": {
             "version": 1,
             "tokens": {
@@ -912,641 +958,44 @@
             },
             "tree": [
               {
-                "id": "root",
+                "id": "phase_b_root",
                 "type": "container",
                 "children": [
                   {
-                    "id": "title",
+                    "id": "phase_b_title",
                     "type": "heading",
-                    "text": "Welcome to The Cheeto Factory"
+                    "text": "Preview for phase_b"
                   },
                   {
-                    "id": "desc",
+                    "id": "phase_b_body",
                     "type": "text",
-                    "text": "Discover the art of crafting the world's most delicious, crunchy, and cheesy snacks."
+                    "text": "Model output was normalized into constrained preview components."
                   },
                   {
-                    "id": "cta",
+                    "id": "phase_b_cta",
                     "type": "button",
-                    "text": "Explore Our Flavors",
+                    "text": "Primary Action",
                     "variant": "primary"
                   }
                 ]
               }
             ]
           },
-          "uiCode": {
-            "language": "html",
-            "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Crunchy & Cheesy Goodness</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #333; background-color: #FFF9F0; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }\n        header { background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%); color: white; padding: 2rem 0; }\n        .hero { text-align: center; padding: 4rem 1rem; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }\n        .hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto 2rem; color: #444; }\n        .btn-primary { background-color: #8B5CF6; color: white; border: none; padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s; }\n        .btn-primary:hover { background-color: #7C3AED; }\n        .section { padding: 4rem 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #FF6B00; }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }\n        .feature-card { background: white; border-radius: 0.5rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }\n        .feature-card h3 { color: #8B5CF6; margin-bottom: 1rem; }\n        .flavor-showcase { background-color: #F8F5FF; }\n        .flavor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }\n        .flavor-item { background: white; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }\n        .flavor-img { height: 180px; background-color: #FFD8B2; }\n        .flavor-content { padding: 1.5rem; }\n        .flavor-content h4 { color: #FF6B00; }\n        footer { background-color: #222; color: #ddd; text-align: center; padding: 2.5rem 0; margin-top: 3rem; }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container\">\n            <h1>The Cheeto Factory</h1>\n            <p>Crafting iconic crunch since day one.</p>\n        </div>\n    </header>\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Welcome to Crunch Central</h1>\n                <p>We are passionate artisans dedicated to creating the perfect balance of cheese, crunch, and joy. Every Cheeto is a masterpiece of snack engineering.</p>\n                <a href=\"#flavors\" class=\"btn-primary\">Explore Our Flavors</a>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"feature-card\">\n                        <h3>Premium Ingredients</h3>\n                        <p>We source only the finest corn and real cheese for an authentic, irresistible taste.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Perfect Crunch</h3>\n                        <p>Our proprietary process ensures the ideal texture in every single piece.</p>\n                    </div>\n                    <div class=\"feature-card\">\n                        <h3>Endless Innovation</h3>\n                        <p>From classic cheese to bold new flavors, we're always pushing the crunchy envelope.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section id=\"flavors\" class=\"section flavor-showcase\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Classic Cheese</h4>\n                            <p>The original, legendary flavor that started it all. Bold, cheesy, and perfectly orange.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Flamin' Hot</h4>\n                            <p>A fiery twist that brings the heat. For those who like their crunch with a kick.</p>\n                        </div>\n                    </div>\n                    <div class=\"flavor-item\">\n                        <div class=\"flavor-img\"></div>\n                        <div class=\"flavor-content\">\n                            <h4>Extra Crunchy</h4>\n                            <p>For the ultimate crunch enthusiasts. A thicker, more satisfying snap in every bite.</p>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </section>\n        <section class=\"section\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Crunch?</h2>\n                <p style=\"font-size: 1.2rem; margin-bottom: 2rem;\">Join the Cheeto Factory family. Find our snacks in a store near you.</p>\n                <a href=\"#\" class=\"btn-primary\">Find a Retailer</a>\n            </div>\n        </section>\n    </main>\n    <footer>\n        <div class=\"container\">\n            <p>&copy; <span id=\"year\">2024</span> The Cheeto Factory. All rights reserved.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">A fictional concept website for demonstration.</p>\n        </div>\n    </footer>\n    \n</body>\n</html>",
-            "sanitized": true
-          },
-          "diff": "Initial artifact for phase_a. Created a complete, themed HTML website for 'The Cheeto Factory' with hero, features, product showcase, and CTA sections. Used provided accent color (#8B5CF6) for primary actions and orange gradients for branding. Included a simple script only for dynamic copyright year, as allowed.",
+          "diff": "Mock persisted diff output",
           "rubricResults": [
             {
-              "criterion": "Theme Adherence",
-              "score": 5,
+              "criterion": "Structured output parse",
+              "score": 3,
               "maxScore": 5,
-              "note": "Website fully embodies the 'Cheeto Factory' concept with appropriate color scheme, playful copy, and snack-focused content."
-            },
-            {
-              "criterion": "UI Completeness",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Includes a full website structure: header, hero, multiple content sections (craft, flavors, CTA), and a footer. All HTML is self-contained."
-            },
-            {
-              "criterion": "Code Safety & Constraints",
-              "score": 4,
-              "maxScore": 5,
-              "note": "No external assets, event handlers, or unsafe elements. Includes a minimal, benign script for current year display."
-            },
-            {
-              "criterion": "Visual Design",
-              "score": 4,
-              "maxScore": 5,
-              "note": "Uses consistent spacing, radius, and the provided accent color. Layout is responsive and visually cohesive."
+              "note": "Response was non-JSON; fallback preview used"
             }
           ],
           "details": {
             "provider": "deepseek",
-            "generatedAt": "2026-02-24T23:27:24.860Z",
-            "contextArtifact": {
-              "intent": "Cheeto Factory Website",
-              "branchFactor": 2
-            }
+            "generatedAt": "2026-02-25T00:22:03.538Z",
+            "rawLlmResponse": "Mock persisted diff output"
           }
         }
-      }
-    },
-    "art_2fc80de2-24c6-4655-9791-bc6df14be079": {
-      "artifactId": "art_2fc80de2-24c6-4655-9791-bc6df14be079",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_c",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_2fc80de2-24c6-4655-9791-bc6df14be079",
-      "createdAt": "2026-02-24T23:28:11.728Z",
-      "data": {
-        "uiSchema": {
-          "version": 1,
-          "tokens": {
-            "accentColor": "#8B5CF6",
-            "radius": "md",
-            "spacing": "md"
-          },
-          "tree": [
-            {
-              "id": "root",
-              "type": "container",
-              "children": [
-                {
-                  "id": "title",
-                  "type": "heading",
-                  "text": "Welcome to the Cheeto Factory"
-                },
-                {
-                  "id": "desc",
-                  "type": "text",
-                  "text": "Discover the art and science behind the world's favorite cheesy snack. From our signature crunch to our bold flavors, we craft every Cheeto with passion."
-                },
-                {
-                  "id": "cta",
-                  "type": "button",
-                  "text": "Explore Our Flavors",
-                  "variant": "primary"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    "art_f8818963-0c12-430b-8689-5ae101b272a4": {
-      "artifactId": "art_f8818963-0c12-430b-8689-5ae101b272a4",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_c",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_f8818963-0c12-430b-8689-5ae101b272a4",
-      "createdAt": "2026-02-24T23:28:11.731Z",
-      "data": {
-        "uiCode": {
-          "language": "html",
-          "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }\n        :root { --accent: #8B5CF6; --radius: 12px; --spacing: 1.5rem; --surface-light: #fef7ff; --surface-lighter: #ffffff; --text-primary: #1f1f2a; --text-secondary: #4a4a5e; }\n        body { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 50%, #f0f4ff 100%); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing); }\n        header { padding: calc(var(--spacing) * 2) 0; display: flex; justify-content: space-between; align-items: center; }\n        .logo { font-weight: 800; font-size: 1.8rem; color: var(--accent); }\n        nav a { margin-left: var(--spacing); text-decoration: none; color: var(--text-secondary); font-weight: 500; }\n        nav a:hover { color: var(--accent); }\n        .hero { text-align: center; padding: calc(var(--spacing) * 4) 0; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: var(--spacing); color: var(--text-primary); line-height: 1.2; }\n        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto var(--spacing); color: var(--text-secondary); }\n        .btn { display: inline-block; background: var(--accent); color: white; padding: 1rem 2.5rem; border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }\n        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25); }\n        section { padding: calc(var(--spacing) * 3) 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: calc(var(--spacing) * 2); color: var(--text-primary); }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing); }\n        .card { background: var(--surface-lighter); padding: calc(var(--spacing) * 1.5); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }\n        .card h3 { color: var(--accent); margin-bottom: 0.75rem; font-size: 1.5rem; }\n        .flavors { background: var(--surface-light); border-radius: var(--radius); padding: calc(var(--spacing) * 2); }\n        .flavor-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing); margin-top: var(--spacing); }\n        .flavor-pill { background: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }\n        .flavor-pill.cheesy { border-left: 5px solid #FFD700; }\n        .flavor-pill.flamin { border-left: 5px solid #FF4500; }\n        .flavor-pill.jalapeno { border-left: 5px solid #32CD32; }\n        .cta-section { text-align: center; background: linear-gradient(to right, #8B5CF6, #6D28D9); color: white; padding: calc(var(--spacing) * 4) var(--spacing); border-radius: var(--radius); margin: calc(var(--spacing) * 3) 0; }\n        .cta-section h2 { font-size: 2.8rem; margin-bottom: var(--spacing); }\n        .cta-section .btn { background: white; color: var(--accent); margin-top: var(--spacing); }\n        footer { text-align: center; padding: calc(var(--spacing) * 2) 0; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.08); margin-top: calc(var(--spacing) * 3); }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n            header { flex-direction: column; gap: var(--spacing); }\n            nav a { margin: 0 0.75rem; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo\">CHEETO FACTORY</div>\n            <nav>\n                <a href=\"#\">Home</a>\n                <a href=\"#\">Our Story</a>\n                <a href=\"#\">Flavors</a>\n                <a href=\"#\">Visit</a>\n                <a href=\"#\">Contact</a>\n            </nav>\n        </header>\n        <main>\n            <section class=\"hero\">\n                <h1>Where Crunch Meets Cheesy Perfection</h1>\n                <p>Step inside the legendary Cheeto Factory. We've been crafting irresistibly cheesy, perfectly crunchy snacks for decades, using only the finest ingredients and a whole lot of fun.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </section>\n            <section>\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"card\">\n                        <h3>Signature Crunch</h3>\n                        <p>Our proprietary process creates the light, airy, and satisfying crunch that has defined the Cheeto experience since day one.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Bold Cheese Blend</h3>\n                        <p>We use a secret combination of aged cheddar and other savory cheeses to create our iconic, finger-dusting flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Fun in Every Bag</h3>\n                        <p>From the shape to the color, we design our snacks to bring a moment of joy and playfulness to your day.</p>\n                    </div>\n                </div>\n            </section>\n            <section id=\"flavors\" class=\"flavors\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <p style=\"text-align: center; margin-bottom: var(--spacing);\">Discover the range of tastes that have made us a household name.</p>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-pill cheesy\">Classic Cheesy</div>\n                    <div class=\"flavor-pill flamin\">Flamin' Hot</div>\n                    <div class=\"flavor-pill jalapeno\">Jalapeño Cheddar</div>\n                    <div class=\"flavor-pill\">White Cheddar</div>\n                    <div class=\"flavor-pill\">Crunchy XXTRA Flamin' Hot</div>\n                    <div class=\"flavor-pill\">Puff'd Corn</div>\n                </div>\n            </section>\n            <section class=\"cta-section\">\n                <h2>Ready for a Factory Tour?</h2>\n                <p>Book a behind-the-scenes tour to see the magic happen, smell the cheese, and get a sample of our latest creations hot off the line.</p>\n                <a href=\"#\" class=\"btn\">Schedule Your Visit</a>\n            </section>\n        </main>\n        <footer>\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website preview. No real products are sold here.</p>\n        </footer>\n    </div>\n</body>\n</html>",
-          "sanitized": false
-        }
-      }
-    },
-    "art_3ac72510-0bc4-4d46-b657-ee0f97d56808": {
-      "artifactId": "art_3ac72510-0bc4-4d46-b657-ee0f97d56808",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_c",
-      "attempt": 1,
-      "kind": "diff",
-      "uri": "db://artifacts/art_3ac72510-0bc4-4d46-b657-ee0f97d56808",
-      "createdAt": "2026-02-24T23:28:11.732Z",
-      "data": {
-        "diff": "Initial artifact for phase_c. Full website concept with hero, features, flavor showcase, and CTA sections. Lighter gradient background applied per permutation mode."
-      }
-    },
-    "art_222196c1-7aaa-424a-a96f-505ff62b7181": {
-      "artifactId": "art_222196c1-7aaa-424a-a96f-505ff62b7181",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_c",
-      "attempt": 1,
-      "kind": "rubric",
-      "uri": "db://artifacts/art_222196c1-7aaa-424a-a96f-505ff62b7181",
-      "createdAt": "2026-02-24T23:28:11.734Z",
-      "data": {
-        "rubricResults": [
-          {
-            "criterion": "Completeness of Concept",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Delivers a full, multi-section website with hero, value propositions, product showcase, and clear CTA."
-          },
-          {
-            "criterion": "Visual Design & Accessibility",
-            "score": 4,
-            "maxScore": 5,
-            "note": "Lighter color scheme is bright and readable with good contrast. Could improve text size hierarchy slightly on mobile."
-          },
-          {
-            "criterion": "Code Safety & Constraints",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Fully compliant: no scripts, handlers, or external assets. All styling is inline and safe."
-          },
-          {
-            "criterion": "Brand & Theme Alignment",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Effectively conveys the fun, cheesy, and craft-oriented theme of a Cheeto factory."
-          }
-        ]
-      }
-    },
-    "art_6986f8d8-f836-47cd-abcc-65c3f51d693d": {
-      "artifactId": "art_6986f8d8-f836-47cd-abcc-65c3f51d693d",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_c",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_6986f8d8-f836-47cd-abcc-65c3f51d693d",
-      "createdAt": "2026-02-24T23:28:11.736Z",
-      "data": {
-        "output": {
-          "variantId": "phase_c",
-          "renderMode": "code",
-          "uiSchema": {
-            "version": 1,
-            "tokens": {
-              "accentColor": "#8B5CF6",
-              "radius": "md",
-              "spacing": "md"
-            },
-            "tree": [
-              {
-                "id": "root",
-                "type": "container",
-                "children": [
-                  {
-                    "id": "title",
-                    "type": "heading",
-                    "text": "Welcome to the Cheeto Factory"
-                  },
-                  {
-                    "id": "desc",
-                    "type": "text",
-                    "text": "Discover the art and science behind the world's favorite cheesy snack. From our signature crunch to our bold flavors, we craft every Cheeto with passion."
-                  },
-                  {
-                    "id": "cta",
-                    "type": "button",
-                    "text": "Explore Our Flavors",
-                    "variant": "primary"
-                  }
-                ]
-              }
-            ]
-          },
-          "uiCode": {
-            "language": "html",
-            "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }\n        :root { --accent: #8B5CF6; --radius: 12px; --spacing: 1.5rem; --surface-light: #fef7ff; --surface-lighter: #ffffff; --text-primary: #1f1f2a; --text-secondary: #4a4a5e; }\n        body { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 50%, #f0f4ff 100%); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing); }\n        header { padding: calc(var(--spacing) * 2) 0; display: flex; justify-content: space-between; align-items: center; }\n        .logo { font-weight: 800; font-size: 1.8rem; color: var(--accent); }\n        nav a { margin-left: var(--spacing); text-decoration: none; color: var(--text-secondary); font-weight: 500; }\n        nav a:hover { color: var(--accent); }\n        .hero { text-align: center; padding: calc(var(--spacing) * 4) 0; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: var(--spacing); color: var(--text-primary); line-height: 1.2; }\n        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto var(--spacing); color: var(--text-secondary); }\n        .btn { display: inline-block; background: var(--accent); color: white; padding: 1rem 2.5rem; border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }\n        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25); }\n        section { padding: calc(var(--spacing) * 3) 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: calc(var(--spacing) * 2); color: var(--text-primary); }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing); }\n        .card { background: var(--surface-lighter); padding: calc(var(--spacing) * 1.5); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }\n        .card h3 { color: var(--accent); margin-bottom: 0.75rem; font-size: 1.5rem; }\n        .flavors { background: var(--surface-light); border-radius: var(--radius); padding: calc(var(--spacing) * 2); }\n        .flavor-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing); margin-top: var(--spacing); }\n        .flavor-pill { background: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }\n        .flavor-pill.cheesy { border-left: 5px solid #FFD700; }\n        .flavor-pill.flamin { border-left: 5px solid #FF4500; }\n        .flavor-pill.jalapeno { border-left: 5px solid #32CD32; }\n        .cta-section { text-align: center; background: linear-gradient(to right, #8B5CF6, #6D28D9); color: white; padding: calc(var(--spacing) * 4) var(--spacing); border-radius: var(--radius); margin: calc(var(--spacing) * 3) 0; }\n        .cta-section h2 { font-size: 2.8rem; margin-bottom: var(--spacing); }\n        .cta-section .btn { background: white; color: var(--accent); margin-top: var(--spacing); }\n        footer { text-align: center; padding: calc(var(--spacing) * 2) 0; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.08); margin-top: calc(var(--spacing) * 3); }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n            header { flex-direction: column; gap: var(--spacing); }\n            nav a { margin: 0 0.75rem; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo\">CHEETO FACTORY</div>\n            <nav>\n                <a href=\"#\">Home</a>\n                <a href=\"#\">Our Story</a>\n                <a href=\"#\">Flavors</a>\n                <a href=\"#\">Visit</a>\n                <a href=\"#\">Contact</a>\n            </nav>\n        </header>\n        <main>\n            <section class=\"hero\">\n                <h1>Where Crunch Meets Cheesy Perfection</h1>\n                <p>Step inside the legendary Cheeto Factory. We've been crafting irresistibly cheesy, perfectly crunchy snacks for decades, using only the finest ingredients and a whole lot of fun.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </section>\n            <section>\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"card\">\n                        <h3>Signature Crunch</h3>\n                        <p>Our proprietary process creates the light, airy, and satisfying crunch that has defined the Cheeto experience since day one.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Bold Cheese Blend</h3>\n                        <p>We use a secret combination of aged cheddar and other savory cheeses to create our iconic, finger-dusting flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Fun in Every Bag</h3>\n                        <p>From the shape to the color, we design our snacks to bring a moment of joy and playfulness to your day.</p>\n                    </div>\n                </div>\n            </section>\n            <section id=\"flavors\" class=\"flavors\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <p style=\"text-align: center; margin-bottom: var(--spacing);\">Discover the range of tastes that have made us a household name.</p>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-pill cheesy\">Classic Cheesy</div>\n                    <div class=\"flavor-pill flamin\">Flamin' Hot</div>\n                    <div class=\"flavor-pill jalapeno\">Jalapeño Cheddar</div>\n                    <div class=\"flavor-pill\">White Cheddar</div>\n                    <div class=\"flavor-pill\">Crunchy XXTRA Flamin' Hot</div>\n                    <div class=\"flavor-pill\">Puff'd Corn</div>\n                </div>\n            </section>\n            <section class=\"cta-section\">\n                <h2>Ready for a Factory Tour?</h2>\n                <p>Book a behind-the-scenes tour to see the magic happen, smell the cheese, and get a sample of our latest creations hot off the line.</p>\n                <a href=\"#\" class=\"btn\">Schedule Your Visit</a>\n            </section>\n        </main>\n        <footer>\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website preview. No real products are sold here.</p>\n        </footer>\n    </div>\n</body>\n</html>",
-            "sanitized": false
-          },
-          "diff": "Initial artifact for phase_c. Full website concept with hero, features, flavor showcase, and CTA sections. Lighter gradient background applied per permutation mode.",
-          "rubricResults": [
-            {
-              "criterion": "Completeness of Concept",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Delivers a full, multi-section website with hero, value propositions, product showcase, and clear CTA."
-            },
-            {
-              "criterion": "Visual Design & Accessibility",
-              "score": 4,
-              "maxScore": 5,
-              "note": "Lighter color scheme is bright and readable with good contrast. Could improve text size hierarchy slightly on mobile."
-            },
-            {
-              "criterion": "Code Safety & Constraints",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Fully compliant: no scripts, handlers, or external assets. All styling is inline and safe."
-            },
-            {
-              "criterion": "Brand & Theme Alignment",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Effectively conveys the fun, cheesy, and craft-oriented theme of a Cheeto factory."
-            }
-          ],
-          "details": {
-            "provider": "deepseek",
-            "generatedAt": "2026-02-24T23:28:11.727Z",
-            "permutationMode": "lighter",
-            "permutationIntensity": 1,
-            "permutationIndex": 1,
-            "permutationTotal": 2,
-            "source": "auto_phase_a_permutation"
-          }
-        }
-      }
-    },
-    "art_417b2558-ab86-4009-bd1b-f20dda8d2274": {
-      "artifactId": "art_417b2558-ab86-4009-bd1b-f20dda8d2274",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_b",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_417b2558-ab86-4009-bd1b-f20dda8d2274",
-      "createdAt": "2026-02-24T23:28:15.912Z",
-      "data": {
-        "uiSchema": {
-          "version": 1,
-          "tokens": {
-            "accentColor": "#8B5CF6",
-            "radius": "md",
-            "spacing": "md"
-          },
-          "tree": [
-            {
-              "id": "root",
-              "type": "container",
-              "children": [
-                {
-                  "id": "title",
-                  "type": "heading",
-                  "text": "Welcome to The Cheeto Factory"
-                },
-                {
-                  "id": "desc",
-                  "type": "text",
-                  "text": "Discover the art and science behind the world's most iconic cheesy snack. From humble beginnings to global crunch, explore our story."
-                },
-                {
-                  "id": "cta",
-                  "type": "button",
-                  "text": "Explore Our Flavors",
-                  "variant": "primary"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    "art_72be3245-149f-4dd2-9f07-aa947085cb5d": {
-      "artifactId": "art_72be3245-149f-4dd2-9f07-aa947085cb5d",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_b",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_72be3245-149f-4dd2-9f07-aa947085cb5d",
-      "createdAt": "2026-02-24T23:28:15.917Z",
-      "data": {
-        "uiCode": {
-          "language": "html",
-          "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        :root {\n            --color-bg-dark: #0f0a15;\n            --color-surface: #1a1525;\n            --color-surface-light: #2a2438;\n            --color-accent: #8B5CF6;\n            --color-text: #f0e9ff;\n            --color-text-muted: #b8a9d9;\n            --radius: 10px;\n            --spacing: 1.5rem;\n        }\n        body {\n            font-family: system-ui, -apple-system, sans-serif;\n            background: var(--color-bg-dark);\n            color: var(--color-text);\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n            padding: 0 var(--spacing);\n        }\n        header {\n            padding: var(--spacing) 0;\n            border-bottom: 1px solid var(--color-surface-light);\n        }\n        .header-inner {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n        .logo {\n            font-size: 1.8rem;\n            font-weight: 800;\n            color: var(--color-accent);\n        }\n        nav ul {\n            display: flex;\n            list-style: none;\n            gap: calc(var(--spacing) * 1.5);\n        }\n        nav a {\n            color: var(--color-text-muted);\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.2s;\n        }\n        nav a:hover { color: var(--color-accent); }\n        .hero {\n            padding: calc(var(--spacing) * 4) 0;\n            text-align: center;\n            background: linear-gradient(to bottom, var(--color-surface), var(--color-bg-dark));\n            border-radius: 0 0 var(--radius) var(--radius);\n        }\n        .hero h1 {\n            font-size: 3.5rem;\n            margin-bottom: var(--spacing);\n            color: var(--color-text);\n            line-height: 1.2;\n        }\n        .hero p {\n            font-size: 1.3rem;\n            color: var(--color-text-muted);\n            max-width: 700px;\n            margin: 0 auto var(--spacing);\n        }\n        .btn {\n            display: inline-block;\n            background: var(--color-accent);\n            color: white;\n            padding: 1rem 2.5rem;\n            border-radius: var(--radius);\n            text-decoration: none;\n            font-weight: 700;\n            font-size: 1.1rem;\n            border: none;\n            cursor: pointer;\n            transition: opacity 0.2s;\n        }\n        .btn:hover { opacity: 0.9; }\n        .section {\n            padding: calc(var(--spacing) * 3) 0;\n        }\n        .section-title {\n            font-size: 2.2rem;\n            margin-bottom: var(--spacing);\n            text-align: center;\n        }\n        .section-subtitle {\n            color: var(--color-text-muted);\n            text-align: center;\n            max-width: 700px;\n            margin: 0 auto calc(var(--spacing) * 2);\n            font-size: 1.1rem;\n        }\n        .cards {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: var(--spacing);\n        }\n        .card {\n            background: var(--color-surface);\n            padding: var(--spacing);\n            border-radius: var(--radius);\n            border: 1px solid var(--color-surface-light);\n        }\n        .card h3 {\n            color: var(--color-accent);\n            margin-bottom: 0.75rem;\n            font-size: 1.5rem;\n        }\n        .card p { color: var(--color-text-muted); }\n        footer {\n            background: var(--color-surface);\n            padding: calc(var(--spacing) * 2) 0;\n            text-align: center;\n            border-top: 1px solid var(--color-surface-light);\n            margin-top: calc(var(--spacing) * 3);\n            color: var(--color-text-muted);\n        }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .header-inner { flex-direction: column; gap: var(--spacing); }\n            nav ul { gap: var(--spacing); }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container header-inner\">\n            <div class=\"logo\">The Cheeto Factory</div>\n            <nav>\n                <ul>\n                    <li><a href=\"#story\">Our Story</a></li>\n                    <li><a href=\"#process\">The Process</a></li>\n                    <li><a href=\"#flavors\">Flavors</a></li>\n                    <li><a href=\"#visit\">Visit</a></li>\n                </ul>\n            </nav>\n        </div>\n    </header>\n\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Crafting the Perfect Crunch Since 1948</h1>\n                <p>Step inside the world where cheese meets corn, and science creates snack magic. Every Cheeto is a masterpiece of flavor, texture, and pure joy.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"story\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">From Humble Beginnings</h2>\n                <p class=\"section-subtitle\">What started as a single cheesy puff in a small Michigan kitchen has grown into a global phenomenon, driven by passion and relentless innovation.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>The First Puff</h3>\n                        <p>Invented by accident in 1948, the original Cheeto was a happy mistake that changed snacking forever.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Global Reach</h3>\n                        <p>Today, our factories produce billions of perfectly crunchy pieces, enjoyed in over 30 countries.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Sustainable Snacking</h3>\n                        <p>We're committed to reducing our environmental footprint while maximizing cheesy delight.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"process\" style=\"background: var(--color-surface-light); border-radius: var(--radius);\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">The Art of the Crunch</h2>\n                <p class=\"section-subtitle\">Our proprietary process ensures every Cheeto has the ideal airy texture, bold cheese coating, and satisfying snap.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>Corn Selection</h3>\n                        <p>Only the finest non-GMO corn is used, milled to a precise consistency for the perfect puff base.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Cheese Mastery</h3>\n                        <p>Our signature cheese blend is aged and powdered to create that unmistakable, addictive flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Quality Control</h3>\n                        <p>Every batch is tested for crunch, color, and cheese coverage by our expert snackologists.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"cta-final\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Experience the Crunch?</h2>\n                <p class=\"section-subtitle\" style=\"margin-bottom: calc(var(--spacing) * 2.5);\">Join the Cheeto Factory family. Sign up for exclusive flavor previews, behind-the-scenes tours, and crunchy rewards.</p>\n                <a href=\"#signup\" class=\"btn\" style=\"font-size: 1.2rem; padding: 1.2rem 3rem;\">Sign Up for Crunch News</a>\n            </div>\n        </section>\n    </main>\n\n    <footer>\n        <div class=\"container\">\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website. No real products are sold here.</p>\n        </div>\n    </footer>\n</body>\n</html>",
-          "sanitized": false
-        }
-      }
-    },
-    "art_d8bbbbbb-361f-44a7-b5ea-18d51c23a1c0": {
-      "artifactId": "art_d8bbbbbb-361f-44a7-b5ea-18d51c23a1c0",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_b",
-      "attempt": 1,
-      "kind": "diff",
-      "uri": "db://artifacts/art_d8bbbbbb-361f-44a7-b5ea-18d51c23a1c0",
-      "createdAt": "2026-02-24T23:28:15.920Z",
-      "data": {
-        "diff": "Initial artifact for phase_b. Full website concept with hero, story/process sections, cards, and clear CTAs. Darker color scheme applied with high contrast surfaces and accessible text."
-      }
-    },
-    "art_3d912b3c-0f73-40ea-ac61-5896918e7a8e": {
-      "artifactId": "art_3d912b3c-0f73-40ea-ac61-5896918e7a8e",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_b",
-      "attempt": 1,
-      "kind": "rubric",
-      "uri": "db://artifacts/art_3d912b3c-0f73-40ea-ac61-5896918e7a8e",
-      "createdAt": "2026-02-24T23:28:15.923Z",
-      "data": {
-        "rubricResults": [
-          {
-            "criterion": "Completeness of Concept",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Delivers a full, multi-section website with hero, narrative content, feature cards, and clear calls-to-action, fully meeting the intent."
-          },
-          {
-            "criterion": "Visual Design & Accessibility",
-            "score": 4,
-            "maxScore": 5,
-            "note": "Darker color scheme with high contrast surfaces is implemented effectively. Text is readable. Could slightly increase contrast for some muted text for perfect AAA compliance."
-          },
-          {
-            "criterion": "Code Quality & Safety",
-            "score": 5,
-            "maxScore": 5,
-            "note": "HTML/CSS is self-contained, uses no external assets, scripts, or unsafe elements. Structure is semantic and responsive."
-          },
-          {
-            "criterion": "Adherence to Theme",
-            "score": 5,
-            "maxScore": 5,
-            "note": "Perfectly captures the 'Cheeto Factory' concept with playful yet professional copy and a focus on the product's story and process."
-          }
-        ]
-      }
-    },
-    "art_02d6dce8-1394-435a-b20b-30054bf7e3b9": {
-      "artifactId": "art_02d6dce8-1394-435a-b20b-30054bf7e3b9",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_b",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_02d6dce8-1394-435a-b20b-30054bf7e3b9",
-      "createdAt": "2026-02-24T23:28:15.926Z",
-      "data": {
-        "output": {
-          "variantId": "phase_b",
-          "renderMode": "code",
-          "uiSchema": {
-            "version": 1,
-            "tokens": {
-              "accentColor": "#8B5CF6",
-              "radius": "md",
-              "spacing": "md"
-            },
-            "tree": [
-              {
-                "id": "root",
-                "type": "container",
-                "children": [
-                  {
-                    "id": "title",
-                    "type": "heading",
-                    "text": "Welcome to The Cheeto Factory"
-                  },
-                  {
-                    "id": "desc",
-                    "type": "text",
-                    "text": "Discover the art and science behind the world's most iconic cheesy snack. From humble beginnings to global crunch, explore our story."
-                  },
-                  {
-                    "id": "cta",
-                    "type": "button",
-                    "text": "Explore Our Flavors",
-                    "variant": "primary"
-                  }
-                ]
-              }
-            ]
-          },
-          "uiCode": {
-            "language": "html",
-            "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        :root {\n            --color-bg-dark: #0f0a15;\n            --color-surface: #1a1525;\n            --color-surface-light: #2a2438;\n            --color-accent: #8B5CF6;\n            --color-text: #f0e9ff;\n            --color-text-muted: #b8a9d9;\n            --radius: 10px;\n            --spacing: 1.5rem;\n        }\n        body {\n            font-family: system-ui, -apple-system, sans-serif;\n            background: var(--color-bg-dark);\n            color: var(--color-text);\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n            padding: 0 var(--spacing);\n        }\n        header {\n            padding: var(--spacing) 0;\n            border-bottom: 1px solid var(--color-surface-light);\n        }\n        .header-inner {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n        .logo {\n            font-size: 1.8rem;\n            font-weight: 800;\n            color: var(--color-accent);\n        }\n        nav ul {\n            display: flex;\n            list-style: none;\n            gap: calc(var(--spacing) * 1.5);\n        }\n        nav a {\n            color: var(--color-text-muted);\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.2s;\n        }\n        nav a:hover { color: var(--color-accent); }\n        .hero {\n            padding: calc(var(--spacing) * 4) 0;\n            text-align: center;\n            background: linear-gradient(to bottom, var(--color-surface), var(--color-bg-dark));\n            border-radius: 0 0 var(--radius) var(--radius);\n        }\n        .hero h1 {\n            font-size: 3.5rem;\n            margin-bottom: var(--spacing);\n            color: var(--color-text);\n            line-height: 1.2;\n        }\n        .hero p {\n            font-size: 1.3rem;\n            color: var(--color-text-muted);\n            max-width: 700px;\n            margin: 0 auto var(--spacing);\n        }\n        .btn {\n            display: inline-block;\n            background: var(--color-accent);\n            color: white;\n            padding: 1rem 2.5rem;\n            border-radius: var(--radius);\n            text-decoration: none;\n            font-weight: 700;\n            font-size: 1.1rem;\n            border: none;\n            cursor: pointer;\n            transition: opacity 0.2s;\n        }\n        .btn:hover { opacity: 0.9; }\n        .section {\n            padding: calc(var(--spacing) * 3) 0;\n        }\n        .section-title {\n            font-size: 2.2rem;\n            margin-bottom: var(--spacing);\n            text-align: center;\n        }\n        .section-subtitle {\n            color: var(--color-text-muted);\n            text-align: center;\n            max-width: 700px;\n            margin: 0 auto calc(var(--spacing) * 2);\n            font-size: 1.1rem;\n        }\n        .cards {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: var(--spacing);\n        }\n        .card {\n            background: var(--color-surface);\n            padding: var(--spacing);\n            border-radius: var(--radius);\n            border: 1px solid var(--color-surface-light);\n        }\n        .card h3 {\n            color: var(--color-accent);\n            margin-bottom: 0.75rem;\n            font-size: 1.5rem;\n        }\n        .card p { color: var(--color-text-muted); }\n        footer {\n            background: var(--color-surface);\n            padding: calc(var(--spacing) * 2) 0;\n            text-align: center;\n            border-top: 1px solid var(--color-surface-light);\n            margin-top: calc(var(--spacing) * 3);\n            color: var(--color-text-muted);\n        }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .header-inner { flex-direction: column; gap: var(--spacing); }\n            nav ul { gap: var(--spacing); }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container header-inner\">\n            <div class=\"logo\">The Cheeto Factory</div>\n            <nav>\n                <ul>\n                    <li><a href=\"#story\">Our Story</a></li>\n                    <li><a href=\"#process\">The Process</a></li>\n                    <li><a href=\"#flavors\">Flavors</a></li>\n                    <li><a href=\"#visit\">Visit</a></li>\n                </ul>\n            </nav>\n        </div>\n    </header>\n\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Crafting the Perfect Crunch Since 1948</h1>\n                <p>Step inside the world where cheese meets corn, and science creates snack magic. Every Cheeto is a masterpiece of flavor, texture, and pure joy.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"story\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">From Humble Beginnings</h2>\n                <p class=\"section-subtitle\">What started as a single cheesy puff in a small Michigan kitchen has grown into a global phenomenon, driven by passion and relentless innovation.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>The First Puff</h3>\n                        <p>Invented by accident in 1948, the original Cheeto was a happy mistake that changed snacking forever.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Global Reach</h3>\n                        <p>Today, our factories produce billions of perfectly crunchy pieces, enjoyed in over 30 countries.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Sustainable Snacking</h3>\n                        <p>We're committed to reducing our environmental footprint while maximizing cheesy delight.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"process\" style=\"background: var(--color-surface-light); border-radius: var(--radius);\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">The Art of the Crunch</h2>\n                <p class=\"section-subtitle\">Our proprietary process ensures every Cheeto has the ideal airy texture, bold cheese coating, and satisfying snap.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>Corn Selection</h3>\n                        <p>Only the finest non-GMO corn is used, milled to a precise consistency for the perfect puff base.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Cheese Mastery</h3>\n                        <p>Our signature cheese blend is aged and powdered to create that unmistakable, addictive flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Quality Control</h3>\n                        <p>Every batch is tested for crunch, color, and cheese coverage by our expert snackologists.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"cta-final\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Experience the Crunch?</h2>\n                <p class=\"section-subtitle\" style=\"margin-bottom: calc(var(--spacing) * 2.5);\">Join the Cheeto Factory family. Sign up for exclusive flavor previews, behind-the-scenes tours, and crunchy rewards.</p>\n                <a href=\"#signup\" class=\"btn\" style=\"font-size: 1.2rem; padding: 1.2rem 3rem;\">Sign Up for Crunch News</a>\n            </div>\n        </section>\n    </main>\n\n    <footer>\n        <div class=\"container\">\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website. No real products are sold here.</p>\n        </div>\n    </footer>\n</body>\n</html>",
-            "sanitized": false
-          },
-          "diff": "Initial artifact for phase_b. Full website concept with hero, story/process sections, cards, and clear CTAs. Darker color scheme applied with high contrast surfaces and accessible text.",
-          "rubricResults": [
-            {
-              "criterion": "Completeness of Concept",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Delivers a full, multi-section website with hero, narrative content, feature cards, and clear calls-to-action, fully meeting the intent."
-            },
-            {
-              "criterion": "Visual Design & Accessibility",
-              "score": 4,
-              "maxScore": 5,
-              "note": "Darker color scheme with high contrast surfaces is implemented effectively. Text is readable. Could slightly increase contrast for some muted text for perfect AAA compliance."
-            },
-            {
-              "criterion": "Code Quality & Safety",
-              "score": 5,
-              "maxScore": 5,
-              "note": "HTML/CSS is self-contained, uses no external assets, scripts, or unsafe elements. Structure is semantic and responsive."
-            },
-            {
-              "criterion": "Adherence to Theme",
-              "score": 5,
-              "maxScore": 5,
-              "note": "Perfectly captures the 'Cheeto Factory' concept with playful yet professional copy and a focus on the product's story and process."
-            }
-          ],
-          "details": {
-            "provider": "deepseek",
-            "generatedAt": "2026-02-24T23:28:15.910Z",
-            "permutationMode": "darker",
-            "permutationIntensity": 0,
-            "permutationIndex": 0,
-            "permutationTotal": 2,
-            "source": "auto_phase_a_permutation"
-          }
-        }
-      }
-    },
-    "art_398da620-5bd0-4ac6-bb32-016fdc886622": {
-      "artifactId": "art_398da620-5bd0-4ac6-bb32-016fdc886622",
-      "runId": "run_phase_a_poc",
-      "phaseId": "phase_d",
-      "attempt": 1,
-      "kind": "json",
-      "uri": "db://artifacts/art_398da620-5bd0-4ac6-bb32-016fdc886622",
-      "createdAt": "2026-02-24T23:28:15.939Z",
-      "data": {
-        "generatedVariants": [
-          {
-            "variantId": "phase_b",
-            "label": "Very Dark Variant",
-            "status": "APPROVED",
-            "provider": "deepseek",
-            "output": {
-              "variantId": "phase_b",
-              "renderMode": "code",
-              "uiSchema": {
-                "version": 1,
-                "tokens": {
-                  "accentColor": "#8B5CF6",
-                  "radius": "md",
-                  "spacing": "md"
-                },
-                "tree": [
-                  {
-                    "id": "root",
-                    "type": "container",
-                    "children": [
-                      {
-                        "id": "title",
-                        "type": "heading",
-                        "text": "Welcome to The Cheeto Factory"
-                      },
-                      {
-                        "id": "desc",
-                        "type": "text",
-                        "text": "Discover the art and science behind the world's most iconic cheesy snack. From humble beginnings to global crunch, explore our story."
-                      },
-                      {
-                        "id": "cta",
-                        "type": "button",
-                        "text": "Explore Our Flavors",
-                        "variant": "primary"
-                      }
-                    ]
-                  }
-                ]
-              },
-              "uiCode": {
-                "language": "html",
-                "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        :root {\n            --color-bg-dark: #0f0a15;\n            --color-surface: #1a1525;\n            --color-surface-light: #2a2438;\n            --color-accent: #8B5CF6;\n            --color-text: #f0e9ff;\n            --color-text-muted: #b8a9d9;\n            --radius: 10px;\n            --spacing: 1.5rem;\n        }\n        body {\n            font-family: system-ui, -apple-system, sans-serif;\n            background: var(--color-bg-dark);\n            color: var(--color-text);\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n            padding: 0 var(--spacing);\n        }\n        header {\n            padding: var(--spacing) 0;\n            border-bottom: 1px solid var(--color-surface-light);\n        }\n        .header-inner {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n        .logo {\n            font-size: 1.8rem;\n            font-weight: 800;\n            color: var(--color-accent);\n        }\n        nav ul {\n            display: flex;\n            list-style: none;\n            gap: calc(var(--spacing) * 1.5);\n        }\n        nav a {\n            color: var(--color-text-muted);\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.2s;\n        }\n        nav a:hover { color: var(--color-accent); }\n        .hero {\n            padding: calc(var(--spacing) * 4) 0;\n            text-align: center;\n            background: linear-gradient(to bottom, var(--color-surface), var(--color-bg-dark));\n            border-radius: 0 0 var(--radius) var(--radius);\n        }\n        .hero h1 {\n            font-size: 3.5rem;\n            margin-bottom: var(--spacing);\n            color: var(--color-text);\n            line-height: 1.2;\n        }\n        .hero p {\n            font-size: 1.3rem;\n            color: var(--color-text-muted);\n            max-width: 700px;\n            margin: 0 auto var(--spacing);\n        }\n        .btn {\n            display: inline-block;\n            background: var(--color-accent);\n            color: white;\n            padding: 1rem 2.5rem;\n            border-radius: var(--radius);\n            text-decoration: none;\n            font-weight: 700;\n            font-size: 1.1rem;\n            border: none;\n            cursor: pointer;\n            transition: opacity 0.2s;\n        }\n        .btn:hover { opacity: 0.9; }\n        .section {\n            padding: calc(var(--spacing) * 3) 0;\n        }\n        .section-title {\n            font-size: 2.2rem;\n            margin-bottom: var(--spacing);\n            text-align: center;\n        }\n        .section-subtitle {\n            color: var(--color-text-muted);\n            text-align: center;\n            max-width: 700px;\n            margin: 0 auto calc(var(--spacing) * 2);\n            font-size: 1.1rem;\n        }\n        .cards {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: var(--spacing);\n        }\n        .card {\n            background: var(--color-surface);\n            padding: var(--spacing);\n            border-radius: var(--radius);\n            border: 1px solid var(--color-surface-light);\n        }\n        .card h3 {\n            color: var(--color-accent);\n            margin-bottom: 0.75rem;\n            font-size: 1.5rem;\n        }\n        .card p { color: var(--color-text-muted); }\n        footer {\n            background: var(--color-surface);\n            padding: calc(var(--spacing) * 2) 0;\n            text-align: center;\n            border-top: 1px solid var(--color-surface-light);\n            margin-top: calc(var(--spacing) * 3);\n            color: var(--color-text-muted);\n        }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .header-inner { flex-direction: column; gap: var(--spacing); }\n            nav ul { gap: var(--spacing); }\n        }\n    </style>\n</head>\n<body>\n    <header>\n        <div class=\"container header-inner\">\n            <div class=\"logo\">The Cheeto Factory</div>\n            <nav>\n                <ul>\n                    <li><a href=\"#story\">Our Story</a></li>\n                    <li><a href=\"#process\">The Process</a></li>\n                    <li><a href=\"#flavors\">Flavors</a></li>\n                    <li><a href=\"#visit\">Visit</a></li>\n                </ul>\n            </nav>\n        </div>\n    </header>\n\n    <main>\n        <section class=\"hero\">\n            <div class=\"container\">\n                <h1>Crafting the Perfect Crunch Since 1948</h1>\n                <p>Step inside the world where cheese meets corn, and science creates snack magic. Every Cheeto is a masterpiece of flavor, texture, and pure joy.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"story\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">From Humble Beginnings</h2>\n                <p class=\"section-subtitle\">What started as a single cheesy puff in a small Michigan kitchen has grown into a global phenomenon, driven by passion and relentless innovation.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>The First Puff</h3>\n                        <p>Invented by accident in 1948, the original Cheeto was a happy mistake that changed snacking forever.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Global Reach</h3>\n                        <p>Today, our factories produce billions of perfectly crunchy pieces, enjoyed in over 30 countries.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Sustainable Snacking</h3>\n                        <p>We're committed to reducing our environmental footprint while maximizing cheesy delight.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"process\" style=\"background: var(--color-surface-light); border-radius: var(--radius);\">\n            <div class=\"container\">\n                <h2 class=\"section-title\">The Art of the Crunch</h2>\n                <p class=\"section-subtitle\">Our proprietary process ensures every Cheeto has the ideal airy texture, bold cheese coating, and satisfying snap.</p>\n                <div class=\"cards\">\n                    <div class=\"card\">\n                        <h3>Corn Selection</h3>\n                        <p>Only the finest non-GMO corn is used, milled to a precise consistency for the perfect puff base.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Cheese Mastery</h3>\n                        <p>Our signature cheese blend is aged and powdered to create that unmistakable, addictive flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Quality Control</h3>\n                        <p>Every batch is tested for crunch, color, and cheese coverage by our expert snackologists.</p>\n                    </div>\n                </div>\n            </div>\n        </section>\n\n        <section class=\"section\" id=\"cta-final\">\n            <div class=\"container\" style=\"text-align: center;\">\n                <h2 class=\"section-title\">Ready to Experience the Crunch?</h2>\n                <p class=\"section-subtitle\" style=\"margin-bottom: calc(var(--spacing) * 2.5);\">Join the Cheeto Factory family. Sign up for exclusive flavor previews, behind-the-scenes tours, and crunchy rewards.</p>\n                <a href=\"#signup\" class=\"btn\" style=\"font-size: 1.2rem; padding: 1.2rem 3rem;\">Sign Up for Crunch News</a>\n            </div>\n        </section>\n    </main>\n\n    <footer>\n        <div class=\"container\">\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website. No real products are sold here.</p>\n        </div>\n    </footer>\n</body>\n</html>",
-                "sanitized": false
-              },
-              "diff": "Initial artifact for phase_b. Full website concept with hero, story/process sections, cards, and clear CTAs. Darker color scheme applied with high contrast surfaces and accessible text.",
-              "rubricResults": [
-                {
-                  "criterion": "Completeness of Concept",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "Delivers a full, multi-section website with hero, narrative content, feature cards, and clear calls-to-action, fully meeting the intent."
-                },
-                {
-                  "criterion": "Visual Design & Accessibility",
-                  "score": 4,
-                  "maxScore": 5,
-                  "note": "Darker color scheme with high contrast surfaces is implemented effectively. Text is readable. Could slightly increase contrast for some muted text for perfect AAA compliance."
-                },
-                {
-                  "criterion": "Code Quality & Safety",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "HTML/CSS is self-contained, uses no external assets, scripts, or unsafe elements. Structure is semantic and responsive."
-                },
-                {
-                  "criterion": "Adherence to Theme",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "Perfectly captures the 'Cheeto Factory' concept with playful yet professional copy and a focus on the product's story and process."
-                }
-              ],
-              "details": {
-                "provider": "deepseek",
-                "generatedAt": "2026-02-24T23:28:15.910Z",
-                "permutationMode": "darker",
-                "permutationIntensity": 0,
-                "permutationIndex": 0,
-                "permutationTotal": 2,
-                "source": "auto_phase_a_permutation"
-              }
-            }
-          },
-          {
-            "variantId": "phase_c",
-            "label": "Very Light Variant",
-            "status": "APPROVED",
-            "provider": "deepseek",
-            "output": {
-              "variantId": "phase_c",
-              "renderMode": "code",
-              "uiSchema": {
-                "version": 1,
-                "tokens": {
-                  "accentColor": "#8B5CF6",
-                  "radius": "md",
-                  "spacing": "md"
-                },
-                "tree": [
-                  {
-                    "id": "root",
-                    "type": "container",
-                    "children": [
-                      {
-                        "id": "title",
-                        "type": "heading",
-                        "text": "Welcome to the Cheeto Factory"
-                      },
-                      {
-                        "id": "desc",
-                        "type": "text",
-                        "text": "Discover the art and science behind the world's favorite cheesy snack. From our signature crunch to our bold flavors, we craft every Cheeto with passion."
-                      },
-                      {
-                        "id": "cta",
-                        "type": "button",
-                        "text": "Explore Our Flavors",
-                        "variant": "primary"
-                      }
-                    ]
-                  }
-                ]
-              },
-              "uiCode": {
-                "language": "html",
-                "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>The Cheeto Factory | Home of the Crunch</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }\n        :root { --accent: #8B5CF6; --radius: 12px; --spacing: 1.5rem; --surface-light: #fef7ff; --surface-lighter: #ffffff; --text-primary: #1f1f2a; --text-secondary: #4a4a5e; }\n        body { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 50%, #f0f4ff 100%); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing); }\n        header { padding: calc(var(--spacing) * 2) 0; display: flex; justify-content: space-between; align-items: center; }\n        .logo { font-weight: 800; font-size: 1.8rem; color: var(--accent); }\n        nav a { margin-left: var(--spacing); text-decoration: none; color: var(--text-secondary); font-weight: 500; }\n        nav a:hover { color: var(--accent); }\n        .hero { text-align: center; padding: calc(var(--spacing) * 4) 0; }\n        .hero h1 { font-size: 3.5rem; margin-bottom: var(--spacing); color: var(--text-primary); line-height: 1.2; }\n        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto var(--spacing); color: var(--text-secondary); }\n        .btn { display: inline-block; background: var(--accent); color: white; padding: 1rem 2.5rem; border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }\n        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25); }\n        section { padding: calc(var(--spacing) * 3) 0; }\n        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: calc(var(--spacing) * 2); color: var(--text-primary); }\n        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing); }\n        .card { background: var(--surface-lighter); padding: calc(var(--spacing) * 1.5); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }\n        .card h3 { color: var(--accent); margin-bottom: 0.75rem; font-size: 1.5rem; }\n        .flavors { background: var(--surface-light); border-radius: var(--radius); padding: calc(var(--spacing) * 2); }\n        .flavor-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing); margin-top: var(--spacing); }\n        .flavor-pill { background: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }\n        .flavor-pill.cheesy { border-left: 5px solid #FFD700; }\n        .flavor-pill.flamin { border-left: 5px solid #FF4500; }\n        .flavor-pill.jalapeno { border-left: 5px solid #32CD32; }\n        .cta-section { text-align: center; background: linear-gradient(to right, #8B5CF6, #6D28D9); color: white; padding: calc(var(--spacing) * 4) var(--spacing); border-radius: var(--radius); margin: calc(var(--spacing) * 3) 0; }\n        .cta-section h2 { font-size: 2.8rem; margin-bottom: var(--spacing); }\n        .cta-section .btn { background: white; color: var(--accent); margin-top: var(--spacing); }\n        footer { text-align: center; padding: calc(var(--spacing) * 2) 0; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.08); margin-top: calc(var(--spacing) * 3); }\n        @media (max-width: 768px) {\n            .hero h1 { font-size: 2.5rem; }\n            .section-title { font-size: 2rem; }\n            header { flex-direction: column; gap: var(--spacing); }\n            nav a { margin: 0 0.75rem; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo\">CHEETO FACTORY</div>\n            <nav>\n                <a href=\"#\">Home</a>\n                <a href=\"#\">Our Story</a>\n                <a href=\"#\">Flavors</a>\n                <a href=\"#\">Visit</a>\n                <a href=\"#\">Contact</a>\n            </nav>\n        </header>\n        <main>\n            <section class=\"hero\">\n                <h1>Where Crunch Meets Cheesy Perfection</h1>\n                <p>Step inside the legendary Cheeto Factory. We've been crafting irresistibly cheesy, perfectly crunchy snacks for decades, using only the finest ingredients and a whole lot of fun.</p>\n                <a href=\"#flavors\" class=\"btn\">Explore Our Flavors</a>\n            </section>\n            <section>\n                <h2 class=\"section-title\">Our Craft</h2>\n                <div class=\"features\">\n                    <div class=\"card\">\n                        <h3>Signature Crunch</h3>\n                        <p>Our proprietary process creates the light, airy, and satisfying crunch that has defined the Cheeto experience since day one.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Bold Cheese Blend</h3>\n                        <p>We use a secret combination of aged cheddar and other savory cheeses to create our iconic, finger-dusting flavor.</p>\n                    </div>\n                    <div class=\"card\">\n                        <h3>Fun in Every Bag</h3>\n                        <p>From the shape to the color, we design our snacks to bring a moment of joy and playfulness to your day.</p>\n                    </div>\n                </div>\n            </section>\n            <section id=\"flavors\" class=\"flavors\">\n                <h2 class=\"section-title\">Iconic Flavors</h2>\n                <p style=\"text-align: center; margin-bottom: var(--spacing);\">Discover the range of tastes that have made us a household name.</p>\n                <div class=\"flavor-grid\">\n                    <div class=\"flavor-pill cheesy\">Classic Cheesy</div>\n                    <div class=\"flavor-pill flamin\">Flamin' Hot</div>\n                    <div class=\"flavor-pill jalapeno\">Jalapeño Cheddar</div>\n                    <div class=\"flavor-pill\">White Cheddar</div>\n                    <div class=\"flavor-pill\">Crunchy XXTRA Flamin' Hot</div>\n                    <div class=\"flavor-pill\">Puff'd Corn</div>\n                </div>\n            </section>\n            <section class=\"cta-section\">\n                <h2>Ready for a Factory Tour?</h2>\n                <p>Book a behind-the-scenes tour to see the magic happen, smell the cheese, and get a sample of our latest creations hot off the line.</p>\n                <a href=\"#\" class=\"btn\">Schedule Your Visit</a>\n            </section>\n        </main>\n        <footer>\n            <p>&copy; 2023 The Cheeto Factory. All rights reserved. Crunch Responsibly.</p>\n            <p style=\"margin-top: 0.5rem; font-size: 0.9rem;\">This is a conceptual website preview. No real products are sold here.</p>\n        </footer>\n    </div>\n</body>\n</html>",
-                "sanitized": false
-              },
-              "diff": "Initial artifact for phase_c. Full website concept with hero, features, flavor showcase, and CTA sections. Lighter gradient background applied per permutation mode.",
-              "rubricResults": [
-                {
-                  "criterion": "Completeness of Concept",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "Delivers a full, multi-section website with hero, value propositions, product showcase, and clear CTA."
-                },
-                {
-                  "criterion": "Visual Design & Accessibility",
-                  "score": 4,
-                  "maxScore": 5,
-                  "note": "Lighter color scheme is bright and readable with good contrast. Could improve text size hierarchy slightly on mobile."
-                },
-                {
-                  "criterion": "Code Safety & Constraints",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "Fully compliant: no scripts, handlers, or external assets. All styling is inline and safe."
-                },
-                {
-                  "criterion": "Brand & Theme Alignment",
-                  "score": 5,
-                  "maxScore": 5,
-                  "note": "Effectively conveys the fun, cheesy, and craft-oriented theme of a Cheeto factory."
-                }
-              ],
-              "details": {
-                "provider": "deepseek",
-                "generatedAt": "2026-02-24T23:28:11.727Z",
-                "permutationMode": "lighter",
-                "permutationIntensity": 1,
-                "permutationIndex": 1,
-                "permutationTotal": 2,
-                "source": "auto_phase_a_permutation"
-              }
-            }
-          }
-        ]
       }
     }
   }

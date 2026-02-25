@@ -396,6 +396,7 @@ test.describe("Team A contract sync", () => {
 
           const snapshotAfter = workflowEngine.getWorkflowSnapshot(runId);
           expect(snapshotAfter.phases[phaseId].output?.diff).toContain("Mock persisted diff output");
+          expect(snapshotAfter.phases[phaseId].output?.details?.rawLlmResponse).toContain("Mock persisted diff output");
           expect(snapshotAfter.phases[phaseId].output?.uiSchema?.version).toBe(1);
           const uiTree = snapshotAfter.phases[phaseId].output?.uiSchema?.tree;
           expect(Array.isArray(uiTree) ? uiTree.length : 0).toBeGreaterThan(0);
