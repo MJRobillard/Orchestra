@@ -330,7 +330,7 @@ async function callLlmDirect(args: LlmCallArgs): Promise<LlmCallResult> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "claude-3-5-sonnet-20241022",
+      model: env.ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514",
       max_tokens: 512,
       messages: [{ role: "user", content: args.prompt }],
     }),

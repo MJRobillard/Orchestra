@@ -14,14 +14,14 @@
     },
     {
       "phaseId": "phase_b",
-      "label": "Variant Generation A",
+      "label": "Variant Generation 0",
       "phaseType": "LLM",
       "status": "RUNNING",
       "dependsOn": ["phase_a"]
     },
     {
       "phaseId": "phase_c",
-      "label": "Variant Generation B",
+      "label": "Variant Generation 1",
       "phaseType": "LLM",
       "status": "RUNNING",
       "dependsOn": ["phase_a"]

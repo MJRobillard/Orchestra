@@ -81,7 +81,6 @@ export function usePhaseAction({
       if (
         phaseId === "phase_e"
         && action === "RETRY_PHASE"
-        && typeof payload?.componentSelector === "string"
         && typeof payload?.refinementPrompt === "string"
       ) {
         const configuredBranchFactor = readConfiguredBranchFactor(snapshot);
@@ -104,8 +103,15 @@ export function usePhaseAction({
                 details: {
                   ...(snapshot.phases.phase_e.output?.details ?? {}),
                   source: "phase_e_component_induction_pending",
-                  componentSelector: payload.componentSelector,
+                  componentSelector:
+                    typeof payload.componentSelector === "string" && payload.componentSelector.trim().length > 0
+                      ? payload.componentSelector
+                      : undefined,
                   refinementPrompt: payload.refinementPrompt,
+                  selectionMode:
+                    typeof payload.componentSelector === "string" && payload.componentSelector.trim().length > 0
+                      ? "explicit_selector"
+                      : "auto_infer",
                   generatedRefinements,
                 },
               },

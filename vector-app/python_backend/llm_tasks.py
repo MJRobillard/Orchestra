@@ -8,6 +8,7 @@ from python_backend.celery_app import celery_app
 
 DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions"
 ANTHROPIC_ENDPOINT = "https://api.anthropic.com/v1/messages"
+ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
 logger = logging.getLogger(__name__)
 
 
@@ -53,19 +54,53 @@ def _parse_text(payload: Any) -> str:
     if not isinstance(payload, dict):
         return ""
 
+    output_text = payload.get("output_text")
+    if isinstance(output_text, str) and output_text.strip():
+        return output_text
+
+    def extract_text_blocks(blocks: Any) -> str:
+        if isinstance(blocks, str):
+            return blocks
+        if not isinstance(blocks, list):
+            return ""
+
+        text_parts: list[str] = []
+        for block in blocks:
+            if isinstance(block, str):
+                text_parts.append(block)
+                continue
+            if not isinstance(block, dict):
+                continue
+            direct_text = block.get("text")
+            if isinstance(direct_text, str):
+                text_parts.append(direct_text)
+                continue
+            nested_content = block.get("content")
+            if isinstance(nested_content, str):
+                text_parts.append(nested_content)
+                continue
+            if isinstance(nested_content, list):
+                nested_text = extract_text_blocks(nested_content)
+                if nested_text:
+                    text_parts.append(nested_text)
+        return "".join(text_parts).strip()
+
     choices = payload.get("choices")
     if isinstance(choices, list) and choices:
         first = choices[0]
         if isinstance(first, dict):
             message = first.get("message")
-            if isinstance(message, dict) and isinstance(message.get("content"), str):
-                return message["content"]
+            if isinstance(message, dict):
+                content = message.get("content")
+                parsed = extract_text_blocks(content)
+                if parsed:
+                    return parsed
 
     content = payload.get("content")
     if isinstance(content, list) and content:
-        first = content[0]
-        if isinstance(first, dict) and isinstance(first.get("text"), str):
-            return first["text"]
+        parsed = extract_text_blocks(content)
+        if parsed:
+            return parsed
 
     return ""
 
@@ -106,7 +141,7 @@ def _invoke_provider(prompt: str, provider: str) -> str:
         )
         return parsed
 
-    logger.info("dispatch details provider=anthropic endpoint=%s model=claude-3-5-sonnet-20241022", ANTHROPIC_ENDPOINT)
+    logger.info("dispatch details provider=anthropic endpoint=%s model=%s", ANTHROPIC_ENDPOINT, ANTHROPIC_MODEL)
     response = requests.post(
         ANTHROPIC_ENDPOINT,
         headers={
@@ -115,8 +150,8 @@ def _invoke_provider(prompt: str, provider: str) -> str:
             "Content-Type": "application/json",
         },
         json={
-            "model": "claude-3-5-sonnet-20241022",
-            "max_tokens": 512,
+            "model": ANTHROPIC_MODEL,
+            "max_tokens": 2048,
             "messages": [{"role": "user", "content": prompt}],
         },
         timeout=timeout_seconds,

@@ -37,7 +37,7 @@ interface MergeReviewPayload {
 }
 
 interface ComponentRefinementPayload {
-  componentSelector: string;
+  componentSelector?: string;
   refinementPrompt: string;
 }
 
@@ -96,13 +96,15 @@ function buildStructuredOutputPrompt(phaseId: string, runId: string, context?: C
 
   return [
     `You are generating a safe UI preview artifact for phase '${phaseId}' in run '${runId}'.`,
-    "Respond with JSON ONLY (no markdown fences) using this shape:",
-    '{"renderMode":"schema","uiSchema":{"version":1,"tokens":{"accentColor":"#8B5CF6","radius":"md","spacing":"md"},"tree":[{"id":"root","type":"container","children":[{"id":"title","type":"heading","text":"..."},{"id":"desc","type":"text","text":"..."},{"id":"cta","type":"button","text":"...", "variant":"primary"}]}]},"uiCode":{"language":"html","code":"<main><h1>...</h1><p>...</p><button>...</button></main>"},"diff":"...","rubricResults":[{"criterion":"...","score":4,"maxScore":5,"note":"..."}]}',
-    "Allowed node types for uiSchema: container, heading, text, button, input.",
-    "Preferred mode is renderMode='code' with a complete website concept in uiCode.code.",
-    "uiCode.language must be 'html' and should include meaningful structure (hero, body sections, CTA, optional footer).",
-    "Never include scripts, event handlers, iframes, object/embed, remote URLs, javascript: URLs, or external assets.",
-    "Keep uiSchema populated as a safe fallback representation even when renderMode='code'.",
+    "Return ONLY body markup (HTML fragment), not a full document. Do not return JSON, markdown fences, explanations, headings, or labels.",
+    "Do not include <!DOCTYPE>, <html>, <head>, or <body> tags (the renderer injects them).",
+    "You may include one compact <style> block at the top when needed for custom styles.",
+    "The HTML should include meaningful structure (hero, supporting sections, clear CTA, optional footer).",
+    "Use Bootstrap classes: container, container-fluid, row, col, col-md-6, col-lg-4, card, card-body, btn, btn-primary, btn-outline-primary, btn-light, btn-outline-light, badge, navbar, table, text-center, bg-light, bg-dark, text-light, text-dark, rounded, shadow.",
+    "Use CSS only. Do not rely on JavaScript-driven Bootstrap behavior.",
+    "Never include scripts, event handlers, iframes, object/embed, javascript: URLs, or external assets.",
+    "Keep the response concise to avoid truncation: compact CSS, no unnecessary comments, no repeated sections, no giant data tables.",
+    "Be aware of output length limits and prioritize a complete, valid, renderable document over extra detail.",
     contextBlock,
   ]
     .filter(Boolean)
@@ -132,14 +134,14 @@ function parseMergeReviewPayload(payload: unknown): MergeReviewPayload | null {
 function parseComponentRefinementPayload(payload: unknown): ComponentRefinementPayload | null {
   if (!payload || typeof payload !== "object") return null;
   const candidate = payload as Record<string, unknown>;
-  if (typeof candidate.componentSelector !== "string" || candidate.componentSelector.trim().length === 0) {
-    return null;
-  }
   if (typeof candidate.refinementPrompt !== "string" || candidate.refinementPrompt.trim().length === 0) {
     return null;
   }
   return {
-    componentSelector: candidate.componentSelector.trim(),
+    componentSelector:
+      typeof candidate.componentSelector === "string" && candidate.componentSelector.trim().length > 0
+        ? candidate.componentSelector.trim()
+        : undefined,
     refinementPrompt: candidate.refinementPrompt.trim(),
   };
 }
@@ -161,7 +163,7 @@ function parseInductionMergePayload(payload: unknown): InductionMergePayload | n
 
 function buildComponentRefinementPrompt(params: {
   runId: string;
-  componentSelector: string;
+  componentSelector?: string;
   refinementPrompt: string;
   currentHtml: string;
   branchLabel?: string;
@@ -175,19 +177,25 @@ function buildComponentRefinementPrompt(params: {
       : "";
   return [
     `You are refining a FINAL merged HTML artifact for run '${params.runId}'.`,
-    "You MUST only refine the specified subset of components.",
-    `Target subset selector: ${params.componentSelector}`,
+    params.componentSelector
+      ? "You MUST only refine the specified subset of components."
+      : "Choose one subsection based on the user request, then only refine that subsection.",
+    params.componentSelector
+      ? `Target subset selector: ${params.componentSelector}`
+      : "No selector was provided. Infer the best target subsection from the request.",
     branchLine,
     typeof params.branchIntensity === "number"
       ? `Branch intensity: ${params.branchIntensity.toFixed(2)} where 0.00 is conservative and 1.00 is bolder.`
       : "",
     "Keep all other parts of the HTML semantically and visually consistent unless required for local compatibility.",
     "Preserve non-target components exactly unless a direct target dependency requires a minimal local change.",
-    "Your output will replace the current HTML directly. It MUST be the same document with ONLY targeted component edits.",
+    "Your output will replace the current body markup directly. It MUST preserve non-target areas with ONLY targeted edits.",
     "Do NOT redesign unrelated sections, rename unrelated ids/classes, or reorder unrelated structure.",
-    "Return JSON ONLY with uiCode.language='html' and full uiCode.code for the entire page.",
-    "Also include diff and rubricResults fields.",
-    "The response must explicitly mention the target selector in diff to confirm scoped edit.",
+    "Return ONLY body markup (HTML fragment), not a full document. Do not return JSON, markdown fences, or prose.",
+    "Do not include <!DOCTYPE>, <html>, <head>, or <body> tags (renderer injects them).",
+    "You may include one compact <style> block at the top when needed for custom styles.",
+    "Prefer Bootstrap classes (card, btn, row/col, badges, navbar, table) to keep output concise.",
+    "Keep output concise and complete so it is not truncated.",
     "",
     `User refinement request: ${params.refinementPrompt}`,
     "",
@@ -254,7 +262,12 @@ function buildFinalMergePrompt(params: {
 
   return [
     `You are merging prior UI variants for final phase_e in run '${params.runId}'.`,
-    "Return JSON ONLY using uiCode.language='html' and full uiCode.code for the merged page.",
+    "Return ONLY merged body markup (HTML fragment), not a full document. Do not return JSON, markdown fences, or prose.",
+    "Do not include <!DOCTYPE>, <html>, <head>, or <body> tags (renderer injects them).",
+    "You may include one compact <style> block at the top when needed for custom styles.",
+    "Prefer Bootstrap classes (container, row/col, card, btn, badge, table, navbar).",
+    "Use CSS only. Do not rely on JavaScript-driven Bootstrap behavior.",
+    "Keep output concise and complete so it is not truncated.",
     "Merge task: produce one final HTML by combining previous variants.",
     "Use MAJORITY code from the preferred variants the user indicates, and only blend portions from others where rationale requires it.",
     "Do not default to the first variant. Choose the strongest base from rationale.",
@@ -334,7 +347,9 @@ function buildPermutationPrompt(
     `Variant ${spec.index + 1}/${spec.total}.`,
     `Gradient intensity: ${spec.intensity.toFixed(2)} where 0.00 = darkest and 1.00 = lightest.`,
     modeInstruction,
-    "Keep returning JSON with uiCode.language='html' and complete uiCode.code HTML.",
+    "For dark variants, prefer bg-dark/text-light; for light variants, prefer bg-light/text-dark.",
+    "Use concise Bootstrap class composition (container, row/col, card, btn, badge, table) over verbose custom CSS.",
+    "For this variant, output ONLY body markup and no wrapper/document tags.",
   ].join("\n\n");
 }
 
@@ -363,15 +378,56 @@ function buildPermutationSpecs(branchFactor: number): PermutationSpec[] {
   });
 }
 
-function extractJsonObject(raw: string): string {
+function extractJsonObjects(raw: string): string[] {
   const trimmed = raw.trim();
-  if (trimmed.startsWith("{") && trimmed.endsWith("}")) return trimmed;
+  if (!trimmed) return [];
+
   const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fenced?.[1]) return fenced[1].trim();
-  const firstBrace = trimmed.indexOf("{");
-  const lastBrace = trimmed.lastIndexOf("}");
-  if (firstBrace >= 0 && lastBrace > firstBrace) return trimmed.slice(firstBrace, lastBrace + 1);
-  return "";
+  const candidate = fenced?.[1]?.trim() ?? trimmed;
+  const objects: string[] = [];
+
+  let startIndex = -1;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < candidate.length; i += 1) {
+    const ch = candidate[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === "\\") {
+        escaped = true;
+      } else if (ch === "\"") {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === "\"") {
+      inString = true;
+      continue;
+    }
+
+    if (ch === "{") {
+      if (depth === 0) startIndex = i;
+      depth += 1;
+      continue;
+    }
+
+    if (ch === "}") {
+      if (depth === 0) continue;
+      depth -= 1;
+      if (depth === 0 && startIndex >= 0) {
+        objects.push(candidate.slice(startIndex, i + 1));
+        startIndex = -1;
+      }
+    }
+  }
+
+  if (objects.length > 0) return objects;
+  if (trimmed.startsWith("{") && trimmed.endsWith("}")) return [trimmed];
+  return [];
 }
 
 function sanitizeSchemaNode(node: unknown): PreviewSchemaRoot["tree"][number] | null {
@@ -502,8 +558,29 @@ function parseStructuredOutput(raw: string, phaseId: string): StructuredPhaseOut
   }
 
   try {
-    const jsonText = extractJsonObject(raw);
-    const parsed = JSON.parse(jsonText) as Partial<StructuredPhaseOutputPayload>;
+    const jsonCandidates = extractJsonObjects(raw);
+    if (jsonCandidates.length === 0) throw new Error("No JSON object found");
+
+    let parsed: Partial<StructuredPhaseOutputPayload> | null = null;
+    for (const candidate of jsonCandidates) {
+      try {
+        const candidateParsed = JSON.parse(candidate) as Partial<StructuredPhaseOutputPayload>;
+        if (
+          candidateParsed &&
+          typeof candidateParsed === "object" &&
+          ("uiCode" in candidateParsed || "uiSchema" in candidateParsed || "renderMode" in candidateParsed)
+        ) {
+          parsed = candidateParsed;
+          break;
+        }
+        if (!parsed) parsed = candidateParsed;
+      } catch {
+        continue;
+      }
+    }
+
+    if (!parsed) throw new Error("Could not parse structured JSON payload");
+
     const candidateTree = Array.isArray(parsed.uiSchema?.tree) ? parsed.uiSchema.tree : [];
     const tree = candidateTree
       .map((node) => sanitizeSchemaNode(node))
@@ -641,13 +718,17 @@ export async function handleActionRequest(
         runId,
         phaseId,
         status: "ERROR_STATUS",
-        message: "Phase E refinement requires payload.componentSelector and payload.refinementPrompt",
+        message: "Phase E refinement requires payload.refinementPrompt (componentSelector is optional)",
       },
       { status: 400, headers: { "x-contract-version": getContractVersion() } },
     );
   }
 
-  if (isPhaseEInduction && action === "RETRY_PHASE" && parsedComponentRefinementPayload) {
+  if (
+    isPhaseEInduction &&
+    action === "RETRY_PHASE" &&
+    parsedComponentRefinementPayload?.componentSelector
+  ) {
     const currentHtml = resolveOutputHtmlForRefinement(runSnapshot.phases.phase_e?.output);
     if (!currentHtml || !currentHtml.includes(parsedComponentRefinementPayload.componentSelector)) {
       return NextResponse.json(
@@ -714,7 +795,9 @@ export async function handleActionRequest(
                 }
               : undefined,
             uiSchema: preActionPhaseEOutput?.uiSchema ?? fallbackSchema(phaseId),
-            diff: `Launching ${inductionSpecs.length} induction worker(s) for '${parsedComponentRefinementPayload.componentSelector}'.`,
+            diff: `Launching ${inductionSpecs.length} induction worker(s) for '${
+              parsedComponentRefinementPayload.componentSelector ?? "LLM-selected subsection"
+            }'.`,
             rubricResults: [
               {
                 criterion: "Induction worker startup",
@@ -727,6 +810,7 @@ export async function handleActionRequest(
               source: "phase_e_component_induction_pending",
               componentSelector: parsedComponentRefinementPayload.componentSelector,
               refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
+              selectionMode: parsedComponentRefinementPayload.componentSelector ? "explicit_selector" : "auto_infer",
               generatedRefinements: inductionSpecs.map((spec) => ({
                 variantId: spec.variantId,
                 label: spec.label,
@@ -789,6 +873,7 @@ export async function handleActionRequest(
                 componentSelector: parsedComponentRefinementPayload.componentSelector,
                 refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
                 scopedRefinement: true,
+                selectionMode: parsedComponentRefinementPayload.componentSelector ? "explicit_selector" : "auto_infer",
                 inductionBranchIndex: spec.index,
                 inductionBranchTotal: spec.total,
                 inductionBranchIntensity: spec.intensity,
@@ -821,7 +906,9 @@ export async function handleActionRequest(
                   }
                 : undefined,
               uiSchema: preActionPhaseEOutput?.uiSchema ?? fallbackSchema(spec.variantId),
-              diff: `Scoped refinement failed for ${parsedComponentRefinementPayload.componentSelector}: ${message}`,
+              diff: `Scoped refinement failed for ${
+                parsedComponentRefinementPayload.componentSelector ?? "LLM-selected subsection"
+              }: ${message}`,
               rubricResults: [
                 {
                   criterion: "Scoped induction refinement",
@@ -834,6 +921,7 @@ export async function handleActionRequest(
                 source: "phase_e_component_induction_error",
                 componentSelector: parsedComponentRefinementPayload.componentSelector,
                 refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
+                selectionMode: parsedComponentRefinementPayload.componentSelector ? "explicit_selector" : "auto_infer",
               },
             },
           });
@@ -885,6 +973,7 @@ export async function handleActionRequest(
             componentSelector: parsedComponentRefinementPayload.componentSelector,
             refinementPrompt: parsedComponentRefinementPayload.refinementPrompt,
             scopedRefinement: true,
+            selectionMode: parsedComponentRefinementPayload.componentSelector ? "explicit_selector" : "auto_infer",
             generatedRefinements,
           },
         };
@@ -906,7 +995,9 @@ export async function handleActionRequest(
           runId,
           phaseId,
           actorId: actorId,
-          reason: `Component refinement completed for '${parsedComponentRefinementPayload.componentSelector}'`,
+          reason: parsedComponentRefinementPayload.componentSelector
+            ? `Component refinement completed for '${parsedComponentRefinementPayload.componentSelector}'`
+            : "Component refinement completed for LLM-selected subsection",
         });
       } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown LLM execution failure";
@@ -1224,7 +1315,11 @@ export async function handleActionRequest(
             phaseId,
             actorId: actorId,
             reason: parsedComponentRefinementPayload
-              ? `Component refinement completed for '${parsedComponentRefinementPayload.componentSelector}'`
+              ? (
+                parsedComponentRefinementPayload.componentSelector
+                  ? `Component refinement completed for '${parsedComponentRefinementPayload.componentSelector}'`
+                  : "Component refinement completed for LLM-selected subsection"
+              )
               : body.reason ?? "Final merge refinement completed",
           });
         } else {
@@ -1372,12 +1467,12 @@ export async function handleActionRequest(
           variantsForMerge.push(
             {
               variantId: "phase_b",
-              label: "Variant B",
+              label: "Variant 1",
               output: snapshot.phases.phase_b?.output,
             },
             {
               variantId: "phase_c",
-              label: "Variant C",
+              label: "Variant 2",
               output: snapshot.phases.phase_c?.output,
             },
           );

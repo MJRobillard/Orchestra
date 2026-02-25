@@ -120,23 +120,23 @@ Output:
 
 ---
 
-### Phase B — Variant Generation A (Parallel)
+### Phase B — Variant Generation 0 (Parallel)
 
 LLM generates constrained UI patch for slot X using approved Phase A context.
 
 Output:
 
-* Candidate Variant A
+* Candidate Variant 0
 
 ---
 
-### Phase C — Variant Generation B (Parallel)
+### Phase C — Variant Generation 1 (Parallel)
 
 Second variant or second slot using approved Phase A context.
 
 Output:
 
-* Candidate Variant B
+* Candidate Variant 1
 
 ---
 

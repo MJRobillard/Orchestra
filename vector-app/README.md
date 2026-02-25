@@ -49,6 +49,7 @@ PYTHON_BACKEND_URL=http://127.0.0.1:8000
 Optional tuning:
 - `PYTHON_LLM_TIMEOUT_MS` (default `120000`)
 - `PYTHON_LLM_POLL_INTERVAL_MS` (default `1000`)
+- `ANTHROPIC_MODEL` (default `claude-sonnet-4-20250514`)
 
 When `PYTHON_BACKEND_ENABLED=1`, TypeScript workflow handlers submit LLM work to `/llm/tasks` and poll `/llm/tasks/{taskId}`, so worker lifecycle is tracked by Celery states (`PENDING`, `STARTED`, `SUCCESS`, `FAILURE`) without requiring Redis.
 

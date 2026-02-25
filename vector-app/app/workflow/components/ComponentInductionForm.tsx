@@ -29,9 +29,9 @@ export function ComponentInductionForm({ dispatch, loading, error }: ComponentIn
     e.preventDefault();
     const selector = componentSelector.trim();
     const prompt = refinementPrompt.trim();
-    if (!selector || !prompt) return;
+    if (!prompt) return;
     await dispatch("RETRY_PHASE", undefined, {
-      componentSelector: selector,
+      ...(selector ? { componentSelector: selector } : {}),
       refinementPrompt: prompt,
     });
   }
@@ -40,7 +40,7 @@ export function ComponentInductionForm({ dispatch, loading, error }: ComponentIn
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" data-testid="component-induction-form">
       <div className="flex flex-col gap-1.5">
         <label htmlFor="component-selector" className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
-          Component Selector <span className="text-slate-600">(required)</span>
+          Component Selector <span className="text-slate-600">(optional)</span>
         </label>
         <input
           id="component-selector"
@@ -48,7 +48,7 @@ export function ComponentInductionForm({ dispatch, loading, error }: ComponentIn
           value={componentSelector}
           disabled={loading}
           onChange={(e) => setComponentSelector(e.target.value)}
-          placeholder="e.g. #hero-cta or .pricing-card:nth-child(2)"
+          placeholder="Optional: e.g. #hero-cta or .pricing-card:nth-child(2)"
           className={INPUT_CLASS}
         />
       </div>
@@ -63,7 +63,7 @@ export function ComponentInductionForm({ dispatch, loading, error }: ComponentIn
           value={refinementPrompt}
           disabled={loading}
           onChange={(e) => setRefinementPrompt(e.target.value)}
-          placeholder="Refine only this component: increase contrast, simplify spacing, and improve hover state."
+          placeholder="Describe the refinement in natural language. If selector is blank, LLM will choose the target subsection."
           className={TEXTAREA_CLASS}
         />
       </div>
@@ -76,10 +76,10 @@ export function ComponentInductionForm({ dispatch, loading, error }: ComponentIn
 
       <button
         type="submit"
-        disabled={loading || componentSelector.trim().length === 0 || refinementPrompt.trim().length === 0}
+        disabled={loading || refinementPrompt.trim().length === 0}
         className="rounded bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-50 disabled:hover:bg-emerald-600"
       >
-        {loading ? "Refining Component..." : "Run Component Induction"}
+        {loading ? "Refining Subsection..." : "Run Component Induction"}
       </button>
     </form>
   );

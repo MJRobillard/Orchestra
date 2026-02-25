@@ -10,7 +10,7 @@
     "runId": "run_20260223_001",
     "phaseId": "phase_d",
     "actorId": "human:reviewer_01",
-    "reason": "Variant A is consistent with rubric"
+    "reason": "Variant 0 is consistent with rubric"
   },
   "retryPhase": {
     "action": "RETRY_PHASE",

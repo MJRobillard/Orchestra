@@ -25,6 +25,7 @@ import { schemaToSafeHtml } from "./utils/schema-to-safe-html";
 import { useMemo, useState } from "react";
 import type { WorkflowActionType } from "@/contracts/workflow-contract";
 import type { PreviewCodeArtifact } from "@/contracts/preview-schema";
+import type { PhaseOutput } from "@/contracts/workflow-contract";
 
 // ReactFlow requires browser APIs — must not SSR
 const WorkflowDAG = dynamic(
@@ -81,6 +82,115 @@ function looksLikeHtmlSnippet(raw: string): boolean {
   return /<\/?[a-z][^>]*>/i.test(raw);
 }
 
+function sanitizeGeneratedHtml(raw: string): { sanitized: string; changed: boolean; safe: boolean } {
+  const original = raw;
+  let sanitized = raw.trim();
+
+  if (!sanitized) return { sanitized: "", changed: original !== sanitized, safe: false };
+
+  sanitized = sanitized.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
+  sanitized = sanitized.replace(/<(iframe|object|embed)\b[\s\S]*?>[\s\S]*?<\/\1>/gi, "");
+  sanitized = sanitized.replace(/<(iframe|object|embed)\b[^>]*\/?>/gi, "");
+  sanitized = sanitized.replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, "");
+  sanitized = sanitized.replace(/\son[a-z]+\s*=\s*'[^']*'/gi, "");
+  sanitized = sanitized.replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, "");
+  sanitized = sanitized.replace(/\s(href|src)\s*=\s*"javascript:[^"]*"/gi, "");
+  sanitized = sanitized.replace(/\s(href|src)\s*=\s*'javascript:[^']*'/gi, "");
+  sanitized = sanitized.replace(/url\s*\(\s*(['"]?)javascript:[^)]*\1\s*\)/gi, "none");
+
+  const hasHardBlockedTokens =
+    /<script\b/i.test(sanitized) ||
+    /<(iframe|object|embed)\b/i.test(sanitized) ||
+    /\son[a-z]+\s*=/i.test(sanitized) ||
+    /javascript:/i.test(sanitized);
+
+  return {
+    sanitized,
+    changed: sanitized !== original,
+    safe: sanitized.length > 0 && !hasHardBlockedTokens,
+  };
+}
+
+function extractJsonObjectBalanced(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  if (trimmed.startsWith("{") && trimmed.endsWith("}")) return trimmed;
+
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = fenced?.[1]?.trim() ?? trimmed;
+
+  let startIndex = -1;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < candidate.length; i += 1) {
+    const ch = candidate[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === "\\") {
+        escaped = true;
+      } else if (ch === "\"") {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === "\"") {
+      inString = true;
+      continue;
+    }
+    if (ch === "{") {
+      if (depth === 0) startIndex = i;
+      depth += 1;
+      continue;
+    }
+    if (ch === "}") {
+      if (depth === 0) continue;
+      depth -= 1;
+      if (depth === 0 && startIndex >= 0) {
+        return candidate.slice(startIndex, i + 1);
+      }
+    }
+  }
+
+  return "";
+}
+
+function parseCodeArtifact(candidate: unknown): PreviewCodeArtifact | null {
+  if (!candidate || typeof candidate !== "object") return null;
+  const record = candidate as Record<string, unknown>;
+  if (record.language !== "html" || typeof record.code !== "string") return null;
+  if (!looksLikeHtmlSnippet(record.code)) return null;
+  const cleaned = sanitizeGeneratedHtml(record.code);
+  if (!cleaned.safe) return null;
+  return {
+    language: "html",
+    code: cleaned.sanitized,
+    sanitized: cleaned.changed,
+  };
+}
+
+function parseStructuredFromRaw(raw?: string): { uiCode?: PreviewCodeArtifact; uiSchema?: unknown } | null {
+  if (!raw || typeof raw !== "string") return null;
+  const jsonText = extractJsonObjectBalanced(raw);
+  if (!jsonText) return null;
+
+  try {
+    const parsed = JSON.parse(jsonText) as {
+      uiCode?: unknown;
+      uiSchema?: unknown;
+    };
+    return {
+      uiCode: parseCodeArtifact(parsed.uiCode) ?? undefined,
+      uiSchema: parsed.uiSchema,
+    };
+  } catch {
+    return null;
+  }
+}
+
 function getConceptOneLiner(diff?: string): string {
   if (!diff) return "A refined UI concept is ready for visual review.";
   const firstLine = diff.split("\n").find((line) => line.trim().length > 0)?.trim() ?? "";
@@ -88,14 +198,19 @@ function getConceptOneLiner(diff?: string): string {
   return firstLine.length > 140 ? `${firstLine.slice(0, 137)}...` : firstLine;
 }
 
-function getRenderableArtifact(output?: {
-  uiCode?: { code: string };
-  uiSchema?: unknown;
-}): PreviewCodeArtifact | null {
+function getRenderableArtifact(output?: PhaseOutput): PreviewCodeArtifact | null {
   if (!output) return null;
-  if (output.uiCode && looksLikeHtmlSnippet(output.uiCode.code)) {
-    return output.uiCode as PreviewCodeArtifact;
+  const parsedCode = parseCodeArtifact(output.uiCode);
+  if (parsedCode) {
+    return parsedCode;
   }
+
+  const recovered = parseStructuredFromRaw(
+    typeof output.details?.rawLlmResponse === "string" ? output.details.rawLlmResponse : undefined,
+  );
+  const recoveredCode = recovered?.uiCode;
+  if (recoveredCode) return recoveredCode;
+
   if (!output.uiSchema) return null;
   return {
     language: "html",
@@ -419,8 +534,8 @@ export default function WorkflowPage() {
         .filter((item): item is NonNullable<typeof item> => Boolean(item));
     }
     return [
-      { variantId: "phase_b", label: "Variant B" },
-      { variantId: "phase_c", label: "Variant C" },
+      { variantId: "phase_b", label: "Variant 1" },
+      { variantId: "phase_c", label: "Variant 2" },
     ];
   }, [snapshot.phases.phase_d?.output?.details?.generatedVariants]);
   const compareItems = useMemo(() => {
@@ -444,7 +559,7 @@ export default function WorkflowPage() {
           .map((entry, idx) => {
             if (!entry || typeof entry !== "object") return null;
             const candidate = entry as Record<string, unknown>;
-            const artifact = getRenderableArtifact(candidate.output as { uiCode?: { code: string }; uiSchema?: unknown });
+            const artifact = getRenderableArtifact(candidate.output as PhaseOutput);
             if (!artifact) return null;
             const variantId = typeof candidate.variantId === "string" ? candidate.variantId : `induction_${idx + 1}`;
             const label = typeof candidate.label === "string" ? candidate.label : variantId;
@@ -471,7 +586,7 @@ export default function WorkflowPage() {
           .map((entry, idx) => {
             if (!entry || typeof entry !== "object") return null;
             const candidate = entry as Record<string, unknown>;
-            const artifact = getRenderableArtifact(candidate.output as { uiCode?: { code: string }; uiSchema?: unknown });
+            const artifact = getRenderableArtifact(candidate.output as PhaseOutput);
             if (!artifact) return null;
             const variantId = typeof candidate.variantId === "string" ? candidate.variantId : `variant_${idx + 1}`;
             const label = typeof candidate.label === "string" ? candidate.label : variantId;
@@ -558,7 +673,7 @@ export default function WorkflowPage() {
         const variantId = typeof candidate.variantId === "string" ? candidate.variantId : undefined;
         const label = typeof candidate.label === "string" ? candidate.label : variantId;
         const status = typeof candidate.status === "string" ? candidate.status : undefined;
-        const hasOutput = Boolean(getRenderableArtifact(candidate.output as { uiCode?: { code: string }; uiSchema?: unknown }));
+        const hasOutput = Boolean(getRenderableArtifact(candidate.output as PhaseOutput));
         if (!variantId || !label) return null;
         return { variantId, label, status, hasOutput };
       })

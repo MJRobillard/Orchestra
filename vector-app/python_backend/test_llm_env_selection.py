@@ -5,6 +5,7 @@ from unittest.mock import Mock, patch
 from python_backend.llm_tasks import (
     ANTHROPIC_ENDPOINT,
     DEEPSEEK_ENDPOINT,
+    _parse_text,
     _invoke_provider,
     _resolve_provider,
 )
@@ -84,6 +85,42 @@ class LlmEnvSelectionTests(unittest.TestCase):
                 called_headers = post.call_args.kwargs["headers"]
                 self.assertEqual(called_url, ANTHROPIC_ENDPOINT)
                 self.assertEqual(called_headers["x-api-key"], "anthropic_key_from_env")
+
+    def test_parse_text_supports_openai_string_content(self):
+        payload = {
+            "choices": [
+                {
+                    "message": {
+                        "content": "{\"renderMode\":\"code\",\"uiCode\":{\"language\":\"html\",\"code\":\"<main>ok</main>\"}}"
+                    }
+                }
+            ]
+        }
+        self.assertIn("\"renderMode\":\"code\"", _parse_text(payload))
+
+    def test_parse_text_supports_openai_content_blocks(self):
+        payload = {
+            "choices": [
+                {
+                    "message": {
+                        "content": [
+                            {"type": "text", "text": "Summary\n"},
+                            {"type": "text", "text": "{\"renderMode\":\"code\"}"},
+                        ]
+                    }
+                }
+            ]
+        }
+        self.assertEqual(_parse_text(payload), "Summary\n{\"renderMode\":\"code\"}")
+
+    def test_parse_text_supports_anthropic_content_blocks(self):
+        payload = {
+            "content": [
+                {"type": "text", "text": "{\"renderMode\":\"code\"}"},
+                {"type": "text", "text": "\nRaw LLM Response"},
+            ]
+        }
+        self.assertEqual(_parse_text(payload), "{\"renderMode\":\"code\"}\nRaw LLM Response")
 
     def test_live_llm_call_uses_selected_provider_credentials(self):
         self._load_local_env_file()

@@ -1,32 +1,65 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import type { PreviewCodeArtifact } from "@/contracts/preview-schema";
 
 interface StrictSandboxCodePreviewProps {
   artifact: PreviewCodeArtifact;
 }
 
+const BOOTSTRAP_CSS_HREF = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
+
+function extractBodyMarkup(raw: string): string {
+  const trimmed = raw.trim();
+  const headStyles = Array.from(trimmed.matchAll(/<style\b[^>]*>[\s\S]*?<\/style>/gi))
+    .map((match) => match[0])
+    .join("\n");
+  const bodyMatch = trimmed.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (bodyMatch?.[1]) {
+    return [headStyles, bodyMatch[1].trim()].filter(Boolean).join("\n").trim();
+  }
+
+  return trimmed
+    .replace(/<!doctype[^>]*>/gi, "")
+    .replace(/<\/?html[^>]*>/gi, "")
+    .replace(/<head[\s\S]*?<\/head>/gi, "")
+    .replace(/<\/?body[^>]*>/gi, "")
+    .trim()
+    .replace(/^/, headStyles ? `${headStyles}\n` : "");
+}
+
 function sanitizeForClient(raw: string): string {
-  let sanitized = raw;
+  let sanitized = extractBodyMarkup(raw);
   sanitized = sanitized.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
   sanitized = sanitized.replace(/<(iframe|object|embed)\b[\s\S]*?>[\s\S]*?<\/\1>/gi, "");
   sanitized = sanitized.replace(/<(iframe|object|embed)\b[^>]*\/?>/gi, "");
+  sanitized = sanitized.replace(/<head[\s\S]*?<\/head>/gi, "");
+  sanitized = sanitized.replace(/<\/?(html|body|title|meta|base|link)\b[^>]*>/gi, "");
+  sanitized = sanitized.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, "");
+  sanitized = sanitized.replace(/<link\b[^>]*>/gi, "");
   sanitized = sanitized.replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, "");
   sanitized = sanitized.replace(/\son[a-z]+\s*=\s*'[^']*'/gi, "");
   sanitized = sanitized.replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, "");
   sanitized = sanitized.replace(/\s(href|src)\s*=\s*"javascript:[^"]*"/gi, "");
   sanitized = sanitized.replace(/\s(href|src)\s*=\s*'javascript:[^']*'/gi, "");
+  sanitized = sanitized.replace(/\s(href|src)\s*=\s*"(https?:)?\/\/[^"]*"/gi, " $1=\"#\"");
+  sanitized = sanitized.replace(/\s(href|src)\s*=\s*'(https?:)?\/\/[^']*'/gi, " $1='#'");
+  sanitized = sanitized.replace(/\ssrcset\s*=\s*"[^"]*"/gi, "");
+  sanitized = sanitized.replace(/\ssrcset\s*=\s*'[^']*'/gi, "");
+  sanitized = sanitized.replace(/url\s*\(\s*(['"]?)(?:javascript:|https?:|\/\/)[^)]*\1\s*\)/gi, "none");
   return sanitized.trim();
 }
 
 function buildSrcDoc(rawHtml: string): string {
-  const html = sanitizeForClient(rawHtml);
+  const bodyMarkup = sanitizeForClient(rawHtml);
+
   return `<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubbly X Sprite - Fizzy Deals That Pop!</title>
+    <link rel="stylesheet" href="${BOOTSTRAP_CSS_HREF}">
     <style>
       :root { color-scheme: light; }
       body {
@@ -39,25 +72,14 @@ function buildSrcDoc(rawHtml: string): string {
       *, *::before, *::after { box-sizing: border-box; }
     </style>
   </head>
-  <body>${html}</body>
+  <body>${bodyMarkup}</body>
 </html>`;
 }
 
 export function StrictSandboxCodePreview({ artifact }: StrictSandboxCodePreviewProps) {
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
-  const frameRef = useRef<HTMLIFrameElement | null>(null);
   const srcDoc = useMemo(() => buildSrcDoc(artifact.code), [artifact.code]);
   const frameWidth = viewport === "mobile" ? "390px" : "100%";
-
-  useEffect(() => {
-    const iframe = frameRef.current;
-    if (!iframe) return;
-    const doc = iframe.contentDocument;
-    if (!doc) return;
-    doc.open();
-    doc.write(srcDoc);
-    doc.close();
-  }, [srcDoc]);
 
   return (
     <div
@@ -92,8 +114,6 @@ export function StrictSandboxCodePreview({ artifact }: StrictSandboxCodePreviewP
 
       <div className="flex justify-center rounded-lg border border-slate-700/80 bg-slate-900 p-2">
         <iframe
-          key={srcDoc}
-          ref={frameRef}
           title="Strict code preview"
           className="h-72 rounded border border-slate-700 bg-white transition-all"
           style={{ width: frameWidth }}
