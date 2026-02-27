@@ -985,14 +985,7 @@ export default function WorkflowPage() {
                     ) : null}
                   </div>
                 </Field>
-              ) : (
-                <div className="rounded border border-dashed border-slate-700 p-3 text-center">
-                  <p className="text-xs text-slate-600">Diff / Rubric</p>
-                  <p className="mt-0.5 text-[10px] text-slate-700">
-                    Available after phase completes (M4)
-                  </p>
-                </div>
-              )}
+              ) : null}
 
               {/* ── Action area: context-init form OR standard buttons ─── */}
               {phaseAction.loading ? (
