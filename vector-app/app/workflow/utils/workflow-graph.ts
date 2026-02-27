@@ -6,6 +6,7 @@ export function buildWorkflowGraph(
   snapshot: WorkflowSnapshot,
   positions: Map<string, { x: number; y: number }>,
   selectedPhaseId?: string,
+  hintedPhaseId?: string,
 ): { nodes: Node<PhaseNodeData>[]; edges: Edge[] } {
   const nodes: Node<PhaseNodeData>[] = snapshot.nodes.map((n) => ({
     id: n.phaseId,
@@ -17,6 +18,7 @@ export function buildWorkflowGraph(
       label: n.label,
       phaseType: n.phaseType,
       status: n.status,
+      startupHint: n.phaseId === hintedPhaseId,
     },
   }));
 

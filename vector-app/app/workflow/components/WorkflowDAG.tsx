@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, type CSSProperties } from "react";
 import {
   ReactFlow,
   Background,
@@ -20,10 +20,11 @@ const nodeTypes: NodeTypes = { phaseNode: PhaseNode };
 interface WorkflowDAGProps {
   snapshot: WorkflowSnapshot;
   selectedPhaseId?: string;
+  hintedPhaseId?: string;
   onSelectPhase: (phaseId: string | null) => void;
 }
 
-export function WorkflowDAG({ snapshot, selectedPhaseId, onSelectPhase }: WorkflowDAGProps) {
+export function WorkflowDAG({ snapshot, selectedPhaseId, hintedPhaseId, onSelectPhase }: WorkflowDAGProps) {
   const positions = useMemo(() => computeDAGLayout(snapshot.nodes, snapshot.edges), [snapshot.nodes, snapshot.edges]);
 
   const { nodes, edges } = useMemo(
@@ -50,12 +51,23 @@ export function WorkflowDAG({ snapshot, selectedPhaseId, onSelectPhase }: Workfl
         nodeTypes={nodeTypes as NodeTypes}
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
+        colorMode="dark"
         fitView
         fitViewOptions={{ padding: 0.35 }}
         minZoom={0.3}
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
         className="bg-slate-950"
+        style={
+          {
+            "--xy-background-color-default": "rgb(2 6 23)",
+            "--xy-controls-button-background-color-default": "rgb(15 23 42)",
+            "--xy-controls-button-background-color-hover-default": "rgb(30 41 59)",
+            "--xy-controls-button-color-default": "rgb(203 213 225)",
+            "--xy-controls-button-color-hover-default": "rgb(226 232 240)",
+            "--xy-controls-button-border-color-default": "rgb(51 65 85)",
+          } as CSSProperties
+        }
       >
         <Background variant={BackgroundVariant.Dots} color="#1e293b" gap={28} size={1.5} />
         <Controls

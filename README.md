@@ -1,5 +1,8 @@
 # Vector Workflow System
 
+[Excalidraw Diagram](https://excalidraw.com/#json=Fz1_E5IGF7V2om5ubL6fK,kKf4lwtMCfO9n_wQgBWN3Q)
+
+
 ## What I designed / built
 This project is a workflow-orchestration system for iterative UI generation and refinement.
 
@@ -139,7 +142,9 @@ If `.env.local` enables live/network modes, fast local tests may fail or become 
 ### 1) Install Node dependencies
 From repo root:
 ```bash
-cd vector-app
+git clone https://github.com/MJRobillard/Orchestra
+
+cd Orchestra/vector-app
 npm install
 ```
 
@@ -151,6 +156,7 @@ Open: `http://localhost:3000/workflow`
 
 ### 3) Start Python backend + Celery (primary)
 ```bash
+cd Orchestra/vector-app
 python -m venv .venv
 source .venv/bin/activate
 pip install -r python_backend/requirements.txt
@@ -158,27 +164,33 @@ pip install -r python_backend/requirements.txt
 
 Start worker:
 ```bash
+cd Orchestra/vector-app
 source .venv/bin/activate
 celery -A python_backend.celery_app.celery_app worker --loglevel=info
 ```
 
 Start Flask API:
 ```bash
+cd Orchestra/vector-app
 source .venv/bin/activate
 flask --app python_backend.app run --host 127.0.0.1 --port 8000 --debug
 ```
 
-Set env for Next runtime:
+Set env for Next runtime in Orchestra/vector-app/.env.local:
 ```bash
+ANTHROPIC_API_KEY=
+ANTHROPIC_MODEL=                                                                                 
+# Your custom flags
+ANTHROPIC_MAX_TOKENS=2048
+TESTING=1
+LLM=ANTHROPIC
+RUN_LLM_CHECK=1
 PYTHON_BACKEND_ENABLED=1
 PYTHON_BACKEND_URL=http://127.0.0.1:8000
+RUN_LIVE_LLM_TEST=1
 ```
 
-Health checks:
-```bash
-curl http://127.0.0.1:8000/health
-curl http://127.0.0.1:3000/api/python-backend/health
-```
+
 
 ## Suggested execution order for contributors
 1. `npm run test:frontend`

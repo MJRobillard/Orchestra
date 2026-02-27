@@ -6,6 +6,7 @@ export interface PhaseNodeData {
   label: string;
   phaseType: PhaseType;
   status: PhaseStatus;
+  startupHint?: boolean;
   [key: string]: unknown;
 }
 
@@ -79,6 +80,8 @@ const TYPE_LABEL: Record<PhaseType, string> = {
 
 export function PhaseNode({ data, selected }: NodeProps<PhaseNodeType>) {
   const cfg = STATUS_CONFIG[data.status] ?? STATUS_CONFIG.DRAFT;
+  const isPreRunEntryNode =
+    data.phaseId === "phase_a" && (data.status === "DRAFT" || data.status === "BLOCKED");
 
   return (
     <>
@@ -92,11 +95,16 @@ export function PhaseNode({ data, selected }: NodeProps<PhaseNodeType>) {
         className={[
           "w-[200px] cursor-pointer rounded-lg border bg-slate-900 px-4 py-3",
           "shadow-lg transition-all duration-150",
+          data.startupHint ? "startup-node-attn" : "",
           cfg.border,
+          isPreRunEntryNode
+            ? "border-[#b87333] shadow-[0_0_0_1px_rgba(184,115,51,0.45),0_0_24px_rgba(184,115,51,0.28)]"
+            : "",
           selected ? "ring-2 ring-white/25 ring-offset-1 ring-offset-slate-950" : "",
         ].join(" ")}
         data-testid={`dag-node-${data.phaseId ?? data.label}`}
         data-status={data.status}
+        style={data.startupHint ? { animation: "startup-node-beacon 3s cubic-bezier(0.16, 1, 0.3, 1) infinite" } : undefined}
       >
         {/* Top row: type chip + status */}
         <div className="flex items-center justify-between gap-2">

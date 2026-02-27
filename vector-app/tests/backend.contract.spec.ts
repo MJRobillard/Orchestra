@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import snapshot from "@/mock_responses/workflow.snapshot.json";
 import actionRequests from "@/mock_responses/action.requests.json";
@@ -92,6 +92,51 @@ function withTemporaryEnv(overrides: Record<string, string | undefined>, fn: () 
   });
 }
 
+function withTestingDeepseekEnv(overrides: Record<string, string | undefined> = {}): NodeJS.ProcessEnv {
+  return withEnv({
+    TESTING: "1",
+    LLM: undefined,
+    LLM_PROVIDER: undefined,
+    PYTHON_BACKEND_ENABLED: "0",
+    PYTHON_BACKEND_URL: undefined,
+    ...overrides,
+  });
+}
+
+function withTemporaryTestingDeepseekEnv(
+  overrides: Record<string, string | undefined>,
+  fn: () => Promise<void>,
+): Promise<void> {
+  return withTemporaryEnv(
+    {
+      TESTING: "1",
+      LLM: undefined,
+      LLM_PROVIDER: undefined,
+      PYTHON_BACKEND_ENABLED: "0",
+      PYTHON_BACKEND_URL: undefined,
+      ...overrides,
+    },
+    fn,
+  );
+}
+
+function getEnvPreflightErrors(env: NodeJS.ProcessEnv = process.env): string[] {
+  const errors: string[] = [];
+  const envLocalPath = join(process.cwd(), ".env.local");
+
+  if (!existsSync(envLocalPath)) {
+    errors.push(`Missing .env.local at ${envLocalPath}`);
+  }
+  if (!(env.ANTHROPIC_API_KEY ?? env.ANTHROPIC)?.trim()) {
+    errors.push("Missing ANTHROPIC_API_KEY (or ANTHROPIC)");
+  }
+  if (!env.ANTHROPIC_MODEL?.trim()) {
+    errors.push("Missing ANTHROPIC_MODEL");
+  }
+
+  return errors;
+}
+
 function readPersistedRunSnapshot(runId: string): WorkflowSnapshot | null {
   const dbPath = join(process.cwd(), ".data", "workflow-db.json");
   try {
@@ -105,6 +150,15 @@ function readPersistedRunSnapshot(runId: string): WorkflowSnapshot | null {
 
 test.describe("Team A contract sync", () => {
   test.describe.configure({ mode: "serial" });
+
+  test("env preflight reports missing .env.local and Anthropic settings explicitly", () => {
+    const errors = getEnvPreflightErrors();
+
+    expect(
+      errors,
+      `Environment setup errors:\n- ${errors.join("\n- ")}\nFix .env.local in vector-app before running contract tests.`,
+    ).toEqual([]);
+  });
 
   test("workflow snapshot mock matches DAG contract", () => {
     const data = snapshot as WorkflowSnapshot;
@@ -298,8 +352,7 @@ test.describe("Team A contract sync", () => {
       runId: "run_env_test_1",
       phaseId: "phase_b",
       prompt: "test prompt",
-      env: withEnv({
-        TESTING: "1",
+      env: withTestingDeepseekEnv({
         DEEPSEEK_API_KEY: "deepseek_test_key",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC_API_KEY: "anthropic_test_key",
@@ -308,7 +361,7 @@ test.describe("Team A contract sync", () => {
       fetchImpl: fetchMock,
     });
 
-    expect(resolveLlmProvider(withEnv({ TESTING: "1" }))).toBe("deepseek");
+    expect(resolveLlmProvider(withTestingDeepseekEnv())).toBe("deepseek");
     expect(result.provider).toBe("deepseek");
     expect(capturedUrl).toContain("deepseek.com");
     expect(capturedAuthHeader).toBe("Bearer deepseek_test_key");
@@ -326,17 +379,15 @@ test.describe("Team A contract sync", () => {
   });
 
   test("runLLMCheck makes a real DeepSeek network call", async () => {
-    test.skip(!shouldRunRealLlmCheck(), "Set RUN_LLM_CHECK=1 (or runLLMCheck=1) to enable live DeepSeek check");
-
     const deepseekKey = getDeepseekKey(process.env);
-    expect(deepseekKey, "DEEPSEEK_API_KEY or DEEPSEEK env var is required for real LLM check").toBeTruthy();
+    test.skip(!shouldRunRealLlmCheck(), "Set RUN_LLM_CHECK=1 (or runLLMCheck=1) to enable live DeepSeek check");
+    test.skip(!deepseekKey, "Set DEEPSEEK_API_KEY or DEEPSEEK to run live DeepSeek check");
 
     const result = await callLlmForPhase({
       runId: "run_real_llm_check",
       phaseId: "phase_b",
       prompt: "Reply with exactly: DEEPSEEK_OK",
-      env: withEnv({
-        TESTING: "1",
+      env: withTestingDeepseekEnv({
         DEEPSEEK_API_KEY: deepseekKey,
         DEEPSEEK: deepseekKey,
         ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
@@ -363,9 +414,8 @@ test.describe("Team A contract sync", () => {
       )) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -460,9 +510,8 @@ test.describe("Team A contract sync", () => {
       )) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -542,9 +591,8 @@ test.describe("Team A contract sync", () => {
     }) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -658,9 +706,8 @@ test.describe("Team A contract sync", () => {
       )) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -808,9 +855,8 @@ test.describe("Team A contract sync", () => {
       )) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -880,9 +926,8 @@ test.describe("Team A contract sync", () => {
       )) as typeof fetch;
     globalThis.fetch = fetchMock;
 
-    await withTemporaryEnv(
+    await withTemporaryTestingDeepseekEnv(
       {
-        TESTING: "1",
         DEEPSEEK: "deepseek_test_key",
         ANTHROPIC: "anthropic_test_key",
       },
@@ -914,18 +959,18 @@ test.describe("Team A contract sync", () => {
     );
   });
 
-  test("M3 integration: applyActionResponse alone misses unblocked dependents — re-fetch resolves desync", () => {
-    // DAG: phase_a(COMPLETED) → phase_b, phase_c → phase_d(BLOCKED) → phase_e(BLOCKED)
+  test("M3 integration: applyActionResponse alone misses unblocked dependents - re-fetch resolves desync", () => {
+    // DAG: phase_a(COMPLETED) -> phase_b, phase_c -> phase_d(BLOCKED) -> phase_e(BLOCKED)
     //
     // Scenario: both parallel LLM phases are approved in sequence. The backend's
-    // unblockDependents() silently flips phase_d BLOCKED→DRAFT when phase_c is
+    // unblockDependents() silently flips phase_d BLOCKED->DRAFT when phase_c is
     // approved (because both dependencies are now APPROVED). No SSE event is
     // emitted for phase_d. applyActionResponse() only touches the targeted phase,
     // so the frontend DAG would show phase_d as BLOCKED until a re-fetch.
     clearWorkflowDb();
     const runId = "run_m3_desync_check";
 
-    // Backend: approve phase_b — phase_d still BLOCKED (only one dependency met)
+    // Backend: approve phase_b - phase_d still BLOCKED (only one dependency met)
     const approveB = workflowEngine.applyWorkflowAction({
       action: "APPROVE_PHASE",
       runId,
@@ -939,7 +984,7 @@ test.describe("Team A contract sync", () => {
     expect(frontendSnapshot.phases["phase_b"].status).toBe("APPROVED");
     expect(frontendSnapshot.phases["phase_d"].status).toBe("BLOCKED");
 
-    // Backend: approve phase_c — triggers unblockDependents on phase_d
+    // Backend: approve phase_c - triggers unblockDependents on phase_d
     const approveC = workflowEngine.applyWorkflowAction({
       action: "APPROVE_PHASE",
       runId,
@@ -948,17 +993,17 @@ test.describe("Team A contract sync", () => {
     });
     expect(approveC.response.accepted).toBeTruthy();
 
-    // ── The desync ──────────────────────────────────────────────────────────
-    // Frontend applies only the targeted phase update — phase_d is still BLOCKED.
+    // The desync:
+    // Frontend applies only the targeted phase update - phase_d is still BLOCKED.
     const frontendAfterC = applyActionResponse(frontendSnapshot, approveC.response);
     expect(frontendAfterC.phases["phase_c"].status).toBe("APPROVED");
-    expect(frontendAfterC.phases["phase_d"].status).toBe("BLOCKED"); // ← stale
+    expect(frontendAfterC.phases["phase_d"].status).toBe("BLOCKED"); // stale
 
-    // ── The fix: re-fetch the authoritative snapshot ────────────────────────
+    // The fix: re-fetch the authoritative snapshot
     // usePhaseAction now fires a background GET /api/workflows/:runId after every
     // successful action, replacing the full store snapshot.
     const authoritative = workflowEngine.getWorkflowSnapshot(runId);
     expect(authoritative.phases["phase_c"].status).toBe("APPROVED");
-    expect(authoritative.phases["phase_d"].status).toBe("DRAFT"); // ← correct
+    expect(authoritative.phases["phase_d"].status).toBe("DRAFT"); // correct
   });
 });

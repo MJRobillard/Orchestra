@@ -22,7 +22,7 @@ import { InductionMergeForm } from "./components/InductionMergeForm";
 import { PhaseAProofCard } from "./components/PhaseAProofCard";
 import { StrictSandboxCodePreview } from "./components/StrictSandboxCodePreview";
 import { schemaToSafeHtml } from "./utils/schema-to-safe-html";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { WorkflowActionType } from "@/contracts/workflow-contract";
 import type { PreviewCodeArtifact } from "@/contracts/preview-schema";
 import type { PhaseOutput } from "@/contracts/workflow-contract";
@@ -496,6 +496,11 @@ export default function WorkflowPage() {
   const pythonConn = PYTHON_BACKEND_INDICATOR[pythonBackendStatus];
   const [dismissedCompareForPhaseId, setDismissedCompareForPhaseId] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [showStartupHints, setShowStartupHints] = useState(true);
+  const firstNodeId = renderingSnapshot.nodes[0]?.phaseId;
+  const startupHintActive = showStartupHints;
+  const hintedPhaseId = startupHintActive ? firstNodeId : undefined;
+  const pulseHelpButton = startupHintActive;
   const isHumanReviewSurface =
     selectedPhase?.status === "READY_FOR_REVIEW" || selectedPhase?.status === "WAITING_FOR_HUMAN";
   const selectedOutput = selectedPhase?.output;
@@ -663,6 +668,14 @@ export default function WorkflowPage() {
       : [];
   const previewDockOpen =
     previewDockItems.length > 0 && dismissedCompareForPhaseId !== (selectedPhaseId ?? "__none__");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowStartupHints(false);
+    }, 15000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const inductionMergeVariants = useMemo(() => {
     const raw = snapshot.phases.phase_e?.output?.details?.generatedRefinements;
     if (!Array.isArray(raw)) return [];
@@ -790,7 +803,7 @@ export default function WorkflowPage() {
             Reset Workflow
           </button>
           <button
-            className="rounded bg-slate-800 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-slate-700 hover:text-slate-100"
+            className={`rounded bg-slate-800 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-slate-700 hover:text-slate-100? "startup-help-attn ring-1 ring-amber-400/70" : ""}`}
             data-testid="open-workflow-help"
             onClick={() => setHelpOpen(true)}
             type="button"
@@ -807,6 +820,7 @@ export default function WorkflowPage() {
           <WorkflowDAG
             snapshot={renderingSnapshot}
             selectedPhaseId={selectedPhaseId ?? undefined}
+            hintedPhaseId={hintedPhaseId}
             onSelectPhase={selectPhase}
           />
           {previewDockOpen ? (

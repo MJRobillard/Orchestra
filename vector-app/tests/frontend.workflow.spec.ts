@@ -66,13 +66,13 @@ test.describe("Team B workflow state sync", () => {
     const before = snapshot as WorkflowSnapshot;
     const next = applyActionResponse(before, response);
 
-    // same reference returned — no allocation, no mutation
+    // same reference returned - no allocation, no mutation
     expect(next).toBe(before);
     expect(next.phases.phase_d.status).toBe("BLOCKED");
   });
 });
 
-test.describe("Team B milestone 2 — live state sync", () => {
+test.describe("Team B milestone 2 - live state sync", () => {
   test("sequential phase_updated events accumulate without cross-contamination", () => {
     // Simulates two parallel LLM phases completing back-to-back over SSE.
     const initial = snapshot as WorkflowSnapshot;
@@ -102,7 +102,7 @@ test.describe("Team B milestone 2 — live state sync", () => {
     expect(after2.phases.phase_b.status).toBe("READY_FOR_REVIEW");
     expect(after2.phases.phase_c.status).toBe("READY_FOR_REVIEW");
 
-    // Counts reflect final state — both in human queue
+    // Counts reflect final state - both in human queue
     const counts = computeWorkflowCounts(after2);
     expect(counts.running).toBe(0);
     expect(counts.humanQueue).toBe(2);
@@ -127,12 +127,12 @@ test.describe("Team B milestone 2 — live state sync", () => {
     const counts = computeWorkflowCounts(after);
 
     expect(counts.humanQueue).toBe(1);
-    // phase_c is still RUNNING — should not be touched
+    // phase_c is still RUNNING - should not be touched
     expect(counts.running).toBe(1);
     expect(after.phases.phase_c.status).toBe("RUNNING");
   });
 
-  test("SSE data round-trip — JSON.parse then apply matches expected state", () => {
+  test("SSE data round-trip - JSON.parse then apply matches expected state", () => {
     // Simulates exactly what useWorkflowStream does: receive raw SSE data string,
     // JSON.parse it, and apply via applyPhaseUpdatedEvent.
     const sseData = JSON.stringify({
@@ -154,7 +154,7 @@ test.describe("Team B milestone 2 — live state sync", () => {
   });
 });
 
-test.describe("Team B milestone 3 — action controls", () => {
+test.describe("Team B milestone 3 - action controls", () => {
   test("getAvailableActions maps every reviewable status to approve + reject", () => {
     expect(getAvailableActions("READY_FOR_REVIEW")).toEqual(["APPROVE_PHASE", "REJECT_PHASE"]);
     expect(getAvailableActions("WAITING_FOR_HUMAN")).toEqual(["APPROVE_PHASE", "REJECT_PHASE"]);
@@ -173,7 +173,7 @@ test.describe("Team B milestone 3 — action controls", () => {
   test("HUMAN phase in DRAFT is routed through context-init (START_PHASE available)", () => {
     // getAvailableActions must include START_PHASE for DRAFT so the form can
     // dispatch it. The page filters START_PHASE out of the button list for HUMAN
-    // phases and replaces it with the ContextInitForm — this test proves the
+    // phases and replaces it with the ContextInitForm - this test proves the
     // action mapping that the form relies on is contract-stable.
     const actions = getAvailableActions("DRAFT");
     expect(actions).toContain("START_PHASE");
@@ -193,7 +193,7 @@ test.describe("Team B milestone 3 — action controls", () => {
     if (rubric.trim()) payload.rubric = rubric.trim();
 
     expect(payload.intent).toBe(intent);
-    expect(payload.tokens).toBeUndefined();    // blank → omitted
+    expect(payload.tokens).toBeUndefined();    // blank -> omitted
     expect(payload.rubric).toBe(rubric);
 
     const req = buildActionRequest("START_PHASE", "run_20260223_001", "phase_a", "user:ui", undefined, payload);
