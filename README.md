@@ -1,8 +1,5 @@
 # Vector Workflow System
 
-[Excalidraw Diagram](https://excalidraw.com/#json=Fz1_E5IGF7V2om5ubL6fK,kKf4lwtMCfO9n_wQgBWN3Q)
-
-
 ## What I designed / built
 This project is a workflow-orchestration system for iterative UI generation and refinement.
 
@@ -28,10 +25,9 @@ This gives fast iteration for product development while still supporting product
 
 ## Architecture
 
-### Excalidraw diagram
-- Architecture diagram JSON: `docs/vector-workflow-architecture.excalidraw.json`
-- Open it by importing into https://excalidraw.com (`Menu -> Open -> From file`).
-- Scope shown: frontend, TS orchestrator, Python/Celery primary runtime, and test lanes.
+### [Excalidraw Diagram](https://excalidraw.com/#json=Fz1_E5IGF7V2om5ubL6fK,kKf4lwtMCfO9n_wQgBWN3Q)
+
+
 
 ### Core components
 - Shared contracts: `vector-app/contracts/workflow-contract.ts`
